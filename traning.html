@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>6-Pack & Biceps Program</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --accent: #e8ff47;
+    --accent2: #ff4757;
+    --text: #f0f0f0;
+    --muted: #888;
+    --border: #2a2a3a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+    animation: fadeDown 0.6s ease both;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(52px, 10vw, 90px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    margin-top: 16px;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+  }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    gap: 1px;
+    background: var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .stat {
+    flex: 1;
+    background: var(--card);
+    padding: 16px 12px;
+    text-align: center;
+  }
+
+  .stat-val {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.3s ease both;
+    flex-wrap: wrap;
+  }
+
+  .tab {
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--muted);
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .tab.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  .tab:hover:not(.active) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Day panels */
+  .day-panel { display: none; }
+  .day-panel.active { display: block; animation: fadeUp 0.4s ease both; }
+
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .day-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #000;
+  }
+
+  .day-badge.rest { background: var(--border); color: var(--muted); }
+
+  .day-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+
+  .day-focus {
+    margin-left: auto;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* Exercise cards */
+  .exercises { display: flex; flex-direction: column; gap: 10px; }
+
+  .ex-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    transition: border-color 0.2s, transform 0.2s;
+    animation: slideIn 0.4s ease both;
+  }
+
+  .ex-card:hover {
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .ex-card:nth-child(1) { animation-delay: 0.05s; }
+  .ex-card:nth-child(2) { animation-delay: 0.1s; }
+  .ex-card:nth-child(3) { animation-delay: 0.15s; }
+  .ex-card:nth-child(4) { animation-delay: 0.2s; }
+  .ex-card:nth-child(5) { animation-delay: 0.25s; }
+  .ex-card:nth-child(6) { animation-delay: 0.3s; }
+  .ex-card:nth-child(7) { animation-delay: 0.35s; }
+
+  .ex-name {
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .ex-tip {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .ex-meta {
+    text-align: right;
+  }
+
+  .ex-sets {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .ex-reps {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 6px;
+  }
+
+  .tag-abs { background: rgba(232,255,71,0.12); color: var(--accent); }
+  .tag-bi { background: rgba(255,71,87,0.12); color: var(--accent2); }
+  .tag-comp { background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  /* Rest day */
+  .rest-card {
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+  }
+
+  .rest-icon { font-size: 40px; margin-bottom: 12px; }
+  .rest-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: var(--muted); }
+  .rest-text { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight: 300; }
+
+  /* Tips section */
+  .tips {
+    margin-top: 40px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .tips-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+    color: var(--muted);
+  }
+
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .tip-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+
+  .tip-icon { font-size: 20px; margin-bottom: 8px; }
+  .tip-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .tip-text { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+</style>
+</head>
+<body>
+<div class="wrapper">
+
+  <header>
+    <div class="eyebrow">Träningsprogram · 4 veckor</div>
+    <h1>6-PACK &<br><span>BICEPS</span></h1>
+    <p class="subtitle">3 pass per vecka · Progressiv överbelastning · Fokus på mage & armar</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-val">3</div><div class="stat-label">Pass/vecka</div></div>
+    <div class="stat"><div class="stat-val">45–60</div><div class="stat-label">Min/pass</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Veckor</div></div>
+    <div class="stat"><div class="stat-val">6–12</div><div class="stat-label">Reps/set</div></div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="showDay('dag1', this)">Dag 1 · Mån</div>
+    <div class="tab" onclick="showDay('dag2', this)">Dag 2 · Ons</div>
+    <div class="tab" onclick="showDay('dag3', this)">Dag 3 · Fre</div>
+    <div class="tab" onclick="showDay('vila', this)">Vila</div>
+  </div>
+
+  <!-- DAG 1 -->
+  <div class="day-panel active" id="dag1">
+    <div class="day-header">
+      <span class="day-badge">PASS 1</span>
+      <span class="day-title">Bröst + Biceps + Mage</span>
+      <span class="day-focus">Styrka</span>
+    </div>
+    <div class="exercises">
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Hantelcurl (stående)</div>
+          <div class="ex-tip">Håll armbågen stilla – rör bara underarmen</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">8–10 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Hammarcurl</div>
+          <div class="ex-tip">Aktiverar brachialis – ger bredare arm</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">10–12 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Bänkpress (skivstång)</div>
+          <div class="ex-tip">Sänk kontrollerat, pressa explosivt</div>
+          <span class="tag tag-comp">Compound</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">6–8 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Crunches (viktat)</div>
+          <div class="ex-tip">Håll spänning hela rörelsen – inga ryck</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">15–20 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Leg Raises</div>
+          <div class="ex-tip">Pressa nedre ryggen mot golvet</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">12–15 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Planka</div>
+          <div class="ex-tip">Spänn rumpan och andas normalt</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">30–60 sek</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAG 2 -->
+  <div class="day-panel" id="dag2">
+    <div class="day-header">
+      <span class="day-badge">PASS 2</span>
+      <span class="day-title">Rygg + Biceps + Mage</span>
+      <span class="day-focus">Volym</span>
+    </div>
+    <div class="exercises">
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Barbell Row (framsida böjd)</div>
+          <div class="ex-tip">Drag mot naveln, håll ryggen rak</div>
+          <span class="tag tag-comp">Compound</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">6–8 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Koncentrationscurl</div>
+          <div class="ex-tip">Isolerat – perfekt för peak</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">10–12 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Kabeldragning (biceps)</div>
+          <div class="ex-tip">Konstant spänning hela rörelsen</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">12–15 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Russian Twist (viktat)</div>
+          <div class="ex-tip">Rör skuldror, ej armar – vrider obliquerna</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">20 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Cable Crunch</div>
+          <div class="ex-tip">Böj i höften, krama ihop magen</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">15 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Hollow Body Hold</div>
+          <div class="ex-tip">Tryck ryggen i golvet hela tiden</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">20–30 sek</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DAG 3 -->
+  <div class="day-panel" id="dag3">
+    <div class="day-header">
+      <span class="day-badge">PASS 3</span>
+      <span class="day-title">Axlar + Biceps + Mage</span>
+      <span class="day-focus">Intensitet</span>
+    </div>
+    <div class="exercises">
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Axelpress (hantel, stående)</div>
+          <div class="ex-tip">Pressa rakt upp – spänn core</div>
+          <span class="tag tag-comp">Compound</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">8–10 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Incline Curl (lutande bänk)</div>
+          <div class="ex-tip">Lång sträckning = maximal bicepsaktivering</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">4</div>
+          <div class="ex-reps">10–12 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">21:or (curl-variant)</div>
+          <div class="ex-tip">7 nere, 7 uppe, 7 fulla – brinner garanterat</div>
+          <span class="tag tag-bi">Biceps</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">21 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Dragon Flag (eller negativ)</div>
+          <div class="ex-tip">Håll kroppen rak som en planka</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">5–8 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Ab Wheel Rollout</div>
+          <div class="ex-tip">Sänk kontrollerat – rulla ut lagom långt</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">8–12 reps</div>
+        </div>
+      </div>
+      <div class="ex-card">
+        <div>
+          <div class="ex-name">Side Planka</div>
+          <div class="ex-tip">Höft rakt upp – ingen sänkning</div>
+          <span class="tag tag-abs">Mage</span>
+        </div>
+        <div class="ex-meta">
+          <div class="ex-sets">3</div>
+          <div class="ex-reps">30 sek/sida</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VILA -->
+  <div class="day-panel" id="vila">
+    <div class="day-header">
+      <span class="day-badge rest">VILA</span>
+      <span class="day-title">Återhämtning</span>
+      <span class="day-focus">Tisdag · Torsdag · Lördag · Söndag</span>
+    </div>
+    <div class="rest-card">
+      <div class="rest-icon">💤</div>
+      <div class="rest-title">Musklerna växer under vila</div>
+      <div class="rest-text">Lätt stretching, promenad eller yoga är okej.<br>Sov 7–8 timmar och ät tillräckligt med protein (1,6–2g/kg kroppsvikt).</div>
+    </div>
+  </div>
+
+  <!-- TIPS -->
+  <div class="tips">
+    <div class="tips-title">// Nycklar till framgång</div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-icon">🥩</div>
+        <div class="tip-title">Protein</div>
+        <div class="tip-text">1,6–2g per kg kroppsvikt/dag. 6-pack skapas i köket – kaloriunderskott krävs.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">📈</div>
+        <div class="tip-title">Progressiv belastning</div>
+        <div class="tip-text">Öka vikt eller reps varje vecka. Utan progression – ingen tillväxt.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">⏱</div>
+        <div class="tip-title">Vila mellan set</div>
+        <div class="tip-text">Compound: 2–3 min. Isolationsövningar: 60–90 sek. Mage: 45–60 sek.</div>
+      </div>
+      <div class="tip-card">
+        <div class="tip-icon">💧</div>
+        <div class="tip-title">Återhämtning</div>
+        <div class="tip-text">Sov 7–8h. Drick 2–3 liter vatten. Stressnivå påverkar cortisol och fettlagring.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function showDay(id, tab) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    tab.classList.add('active');
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lymfflöde – Mike Holland</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --deep: #0d1f2d;
+  --teal: #3a9b8e;
+  --aqua: #5bbfb5;
+  --glow: #7dd4cc;
+  --gold: #c8a96e;
+  --sub: #7aa8a4;
+  --card: rgba(255,255,255,0.05);
+  --card-border: rgba(91,191,181,0.18);
+  --text: #d6eae8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family:'Outfit',sans-serif;
+  background:var(--deep);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+.bg {
+  position:fixed; inset:0; z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 15%, rgba(58,155,142,0.15) 0%, transparent 55%),
+    radial-gradient(ellipse at 85% 85%, rgba(13,45,65,0.8) 0%, transparent 55%),
+    var(--deep);
+}
+.flow-lines {
+  position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.1;
+}
+.flow-svg { width:100%; height:100%; }
+@keyframes flow-dash { to { stroke-dashoffset:-200; } }
+.flow-path { stroke-dasharray:10 20; animation:flow-dash 7s linear infinite; }
+
+.orb {
+  position:fixed; width:300px; height:300px; border-radius:50%;
+  background:radial-gradient(circle, rgba(91,191,181,0.1) 0%, transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-60%);
+  animation:pulse-orb 5s ease-in-out infinite; z-index:0;
+}
+@keyframes pulse-orb {
+  0%,100%{transform:translate(-50%,-60%) scale(1); opacity:0.5;}
+  50%{transform:translate(-50%,-60%) scale(1.12); opacity:0.9;}
+}
+
+.app { position:relative; z-index:1; max-width:480px; margin:0 auto; padding:0 0 110px; }
+
+.header { padding:52px 24px 24px; animation:riseIn 0.8s ease both; }
+.day-tag {
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:10px; letter-spacing:0.2em; text-transform:uppercase; color:var(--aqua); margin-bottom:10px;
+}
+.day-tag::before { content:''; display:block; width:20px; height:1px; background:var(--aqua); }
+.header h1 { font-family:'Libre Baskerville',serif; font-size:34px; font-weight:400; line-height:1.2; color:#fff; }
+.header h1 em { font-style:italic; color:var(--glow); }
+.header-sub { margin-top:8px; font-size:13px; color:var(--sub); font-weight:300; line-height:1.6; }
+.credit {
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:10px; font-size:11px; color:var(--gold);
+  border:1px solid rgba(200,169,110,0.3); border-radius:20px;
+  padding:4px 10px;
+}
+
+/* Progress */
+.progress-row {
+  display:flex; align-items:center; gap:12px;
+  padding:16px 24px 20px;
+  animation:riseIn 0.8s 0.15s ease both;
+}
+.prog-dots { display:flex; gap:5px; flex-wrap:wrap; }
+.prog-dot {
+  width:8px; height:8px; border-radius:50%;
+  background:rgba(91,191,181,0.15);
+  border:1.5px solid rgba(91,191,181,0.25);
+  transition:all 0.4s;
+}
+.prog-dot.done {
+  background:var(--teal); border-color:var(--teal);
+  box-shadow:0 0 7px rgba(91,191,181,0.5);
+}
+.prog-text { font-size:11px; color:var(--sub); margin-left:auto; white-space:nowrap; }
+
+.section-label {
+  padding:0 24px 12px; font-size:10px; letter-spacing:0.18em;
+  text-transform:uppercase; color:var(--gold);
+  animation:riseIn 0.8s 0.2s ease both;
+}
+
+/* Cards */
+.cards { padding:0 24px; display:flex; flex-direction:column; gap:9px; }
+.card {
+  background:var(--card); border:1px solid var(--card-border);
+  border-radius:15px; overflow:hidden; cursor:pointer;
+  transition:border-color 0.3s, box-shadow 0.3s;
+  animation:riseIn 0.6s ease both;
+}
+.card:nth-child(1){animation-delay:0.28s}
+.card:nth-child(2){animation-delay:0.34s}
+.card:nth-child(3){animation-delay:0.40s}
+.card:nth-child(4){animation-delay:0.46s}
+.card:nth-child(5){animation-delay:0.52s}
+.card:nth-child(6){animation-delay:0.58s}
+.card:nth-child(7){animation-delay:0.64s}
+.card:nth-child(8){animation-delay:0.70s}
+.card:nth-child(9){animation-delay:0.76s}
+.card:nth-child(10){animation-delay:0.82s}
+.card:nth-child(11){animation-delay:0.88s}
+.card:nth-child(12){animation-delay:0.94s}
+
+.card:hover { border-color:rgba(91,191,181,0.38); }
+.card.open { border-color:rgba(91,191,181,0.5); box-shadow:0 4px 24px rgba(91,191,181,0.1); }
+
+.card-header { display:flex; align-items:center; padding:13px 15px; gap:11px; }
+.card-num {
+  width:28px; height:28px; border-radius:8px;
+  background:rgba(91,191,181,0.1); border:1px solid rgba(91,191,181,0.2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:500; color:var(--aqua); flex-shrink:0;
+}
+.card-icon { font-size:20px; flex-shrink:0; }
+.card-info { flex:1; min-width:0; }
+.card-name { font-family:'Libre Baskerville',serif; font-size:15px; color:#e8f5f4; }
+.card-tags { display:flex; gap:5px; margin-top:3px; flex-wrap:wrap; }
+.tag { font-size:10px; padding:2px 7px; border-radius:20px; background:rgba(91,191,181,0.1); color:var(--aqua); }
+.card-right { display:flex; flex-direction:column; align-items:flex-end; gap:2px; flex-shrink:0; }
+.card-reps { font-family:'Libre Baskerville',serif; font-size:17px; color:var(--glow); }
+.card-unit { font-size:10px; color:var(--sub); }
+.done-badge { font-size:14px; color:var(--teal); opacity:0; transition:opacity 0.3s; }
+.card.done-card .done-badge { opacity:1; }
+.card.done-card .card-reps,.card.done-card .card-unit { display:none; }
+.card.done-card .card-name { opacity:0.4; text-decoration:line-through; }
+
+/* Body */
+.card-body { max-height:0; overflow:hidden; transition:max-height 0.4s cubic-bezier(0.4,0,0.2,1); }
+.card.open .card-body { max-height:300px; }
+.card-inner {
+  padding:14px 15px 15px;
+  border-top:1px solid rgba(91,191,181,0.1);
+}
+.tip-box {
+  display:flex; gap:10px;
+  background:rgba(91,191,181,0.06);
+  border-left:2px solid var(--teal);
+  border-radius:0 8px 8px 0;
+  padding:10px 12px; margin-bottom:13px;
+}
+.tip-icon { font-size:13px; flex-shrink:0; margin-top:1px; }
+.tip-text { font-size:12px; line-height:1.75; color:#9fcfcb; font-weight:300; }
+
+/* Done button */
+.done-btn {
+  width:100%; padding:10px;
+  border-radius:10px; border:1px solid rgba(91,191,181,0.35);
+  background:transparent; color:var(--aqua);
+  font-family:'Outfit',sans-serif; font-size:12px; letter-spacing:0.06em;
+  cursor:pointer; transition:all 0.2s;
+}
+.done-btn:hover { background:rgba(58,155,142,0.2); border-color:var(--teal); color:var(--glow); }
+.done-btn.completed { background:rgba(58,155,142,0.18); border-color:var(--teal); color:var(--teal); }
+
+/* Timer cards */
+.timer-row { display:flex; align-items:center; gap:12px; }
+.ring-wrap { position:relative; width:52px; height:52px; flex-shrink:0; }
+.ring-wrap svg { transform:rotate(-90deg); }
+.r-bg { fill:none; stroke:rgba(91,191,181,0.15); stroke-width:3.5; }
+.r-prog { fill:none; stroke:var(--teal); stroke-width:3.5; stroke-linecap:round; transition:stroke-dashoffset 1s linear; }
+.ring-num { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'Libre Baskerville',serif; font-size:13px; color:var(--glow); }
+.t-btn {
+  flex:1; padding:10px; border-radius:10px;
+  border:1px solid rgba(91,191,181,0.35);
+  background:transparent; color:var(--aqua);
+  font-family:'Outfit',sans-serif; font-size:12px; letter-spacing:0.06em;
+  cursor:pointer; transition:all 0.2s;
+}
+.t-btn:hover,.t-btn.running { background:rgba(58,155,142,0.22); border-color:var(--teal); color:var(--glow); }
+.t-btn.tdone { background:rgba(58,155,142,0.18); border-color:var(--teal); color:var(--teal); }
+
+/* CTA */
+.cta-wrap {
+  position:fixed; bottom:0; left:50%; transform:translateX(-50%);
+  width:100%; max-width:480px;
+  padding:14px 24px 32px;
+  background:linear-gradient(to top, var(--deep) 65%, transparent); z-index:10;
+}
+.cta-btn {
+  width:100%; padding:15px; border-radius:14px; border:none;
+  background:linear-gradient(135deg, var(--teal), #2a8078);
+  color:#fff; font-family:'Outfit',sans-serif;
+  font-size:14px; letter-spacing:0.06em; cursor:pointer;
+  box-shadow:0 6px 28px rgba(58,155,142,0.35); transition:all 0.25s;
+}
+.cta-btn:hover { transform:translateY(-1px); box-shadow:0 10px 36px rgba(58,155,142,0.45); }
+
+@keyframes riseIn { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+<div class="orb"></div>
+<div class="flow-lines">
+  <svg class="flow-svg" viewBox="0 0 480 900" preserveAspectRatio="none">
+    <path class="flow-path" d="M0,200 Q120,280 240,240 T480,330" fill="none" stroke="#3a9b8e" stroke-width="1.5" opacity="0.7"/>
+    <path class="flow-path" d="M0,420 Q200,500 320,440 T480,540" fill="none" stroke="#5bbfb5" stroke-width="1" opacity="0.5" style="animation-delay:2.5s"/>
+    <path class="flow-path" d="M0,660 Q160,720 300,670 T480,760" fill="none" stroke="#3a9b8e" stroke-width="1.2" opacity="0.5" style="animation-delay:5s"/>
+  </svg>
+</div>
+
+<div class="app">
+  <div class="header">
+    <div class="day-tag">Vilodag · Lymfaktivering</div>
+    <h1>Ancient <em>lymf</em><br>rörelse</h1>
+    <p class="header-sub">12 övningar · ~15 minuter · Ingen utrustning</p>
+    <div class="credit">⚡ Metod: Mike Holland (@mikerholland_)</div>
+  </div>
+
+  <div class="progress-row">
+    <div class="prog-dots" id="prog-dots">
+      <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+    </div>
+    <span class="prog-text" id="prog-text">0 / 12 klara</span>
+  </div>
+
+  <div class="section-label">Mike Hollands lymfpass</div>
+
+  <div class="cards" id="cards">
+
+    <!-- 1 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">1</div>
+        <div class="card-icon">🦘</div>
+        <div class="card-info">
+          <div class="card-name">Lymfstuds</div>
+          <div class="card-tags"><span class="tag">Hela kroppen</span><span class="tag">Lymfpump</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">60</div>
+          <div class="card-unit">studs</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🦘</div>
+          <div class="tip-text">Studsa lätt på tå — hälen lyfter knappt från golvet. Armarna är avslappnade längs sidan. Rörelsen är liten och rytmisk. Gravitationsväxlingen driver lymfflödet genom hela kroppen — precis som en mini-trampolin.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 2 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">2</div>
+        <div class="card-icon">🌊</div>
+        <div class="card-info">
+          <div class="card-name">Kroppsvågor</div>
+          <div class="card-tags"><span class="tag">Ryggrad</span><span class="tag">Fascia</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">10</div>
+          <div class="card-unit">vågor</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🌊</div>
+          <div class="tip-text">Stå med böjda knän. Rör ryggraden som en våg nerifrån — ländryggen, bröstet, nacken, huvudet — i en flytande S-rörelse. Lös upp hela ryggraden och mobilisera fascia längs lymfbanorna.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 3 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">3</div>
+        <div class="card-icon">🌀</div>
+        <div class="card-info">
+          <div class="card-name">Armsvängningar</div>
+          <div class="card-tags"><span class="tag">Axlar</span><span class="tag">Armhålor</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">20</div>
+          <div class="card-unit">svängn.</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🌀</div>
+          <div class="tip-text">Svinga båda armarna fritt framåt och bakåt, sedan cirkulärt. Helt avspända — låt gravitationen göra jobbet. Lymfknutarna i armhålorna aktiveras kraftigt av armrörelse och öppnar överkroppens lymfflöde.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 4 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">4</div>
+        <div class="card-icon">🪢</div>
+        <div class="card-info">
+          <div class="card-name">Trunkrotation</div>
+          <div class="card-tags"><span class="tag">Mittsektion</span><span class="tag">Matsmältning</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">20</div>
+          <div class="card-unit">rotationer</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🪢</div>
+          <div class="tip-text">Fötterna höftbrett isär. Vrid överkroppen vänster-höger med armarna hängande fritt — de slår lätt mot kroppen av momentum. Stimulerar bukens lymfkärl och bukhinnans cisternsystem (cisterna chyli).</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 5 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">5</div>
+        <div class="card-icon">🪵</div>
+        <div class="card-info">
+          <div class="card-name">Dead Arms</div>
+          <div class="card-tags"><span class="tag">Nacke</span><span class="tag">Axlar</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">30</div>
+          <div class="card-unit">sek</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🪵</div>
+          <div class="tip-text">Lyft axlarna och låt armarna falla helt avspända — som döda grenar. Skaka lätt på dem. Löser upp lymfstopp i axlar och nacke, ökar rörligheten och minskar spänningar i bröstkorgsöppningen.</div>
+        </div>
+        <div class="timer-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 52 52" width="52" height="52">
+              <circle class="r-bg" cx="26" cy="26" r="22"/>
+              <circle class="r-prog" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="ring-num">30</div>
+          </div>
+          <button class="t-btn" onclick="startTimer(event,this,30)">Starta</button>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 6 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">6</div>
+        <div class="card-icon">⛳</div>
+        <div class="card-info">
+          <div class="card-name">Golfsvingar</div>
+          <div class="card-tags"><span class="tag">Core</span><span class="tag">Rotation</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">10</div>
+          <div class="card-unit">per sida</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">⛳</div>
+          <div class="tip-text">Simulera en golfsvingrörelse — bred rotation med armarna svepandes i en båge. Bygger rotationsstyrka och koordination, stimulerar samtidigt lymfflödet i bröstkorgen och buken via diafragmarörelse.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 7 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">7</div>
+        <div class="card-icon">🚶</div>
+        <div class="card-info">
+          <div class="card-name">Marschering</div>
+          <div class="card-tags"><span class="tag">Höftflexorer</span><span class="tag">Ljumskar</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">40</div>
+          <div class="card-unit">steg</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🚶</div>
+          <div class="tip-text">Marschera på stället med höga knän och kraftiga armrörelser. Lymfknutarna i ljumskarna — kroppens största lymfknutesamling — aktiveras direkt av knälyft. Håll god hållning och andas djupt.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 8 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">8</div>
+        <div class="card-icon">🩰</div>
+        <div class="card-info">
+          <div class="card-name">Balettsquats</div>
+          <div class="card-tags"><span class="tag">Lår</span><span class="tag">Höft</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">10</div>
+          <div class="card-unit">reps</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🩰</div>
+          <div class="tip-text">Fötterna brett isär med tårna utåt (~45°). Sänk dig långsamt med rak rygg, knäna följer tårna. Öppnar höfter och aktiverar djup lymfdränering i bäckenregionen och nedre extremiteterna.</div>
+        </div>
+        <button class="done-btn" onclick="markDoneBtn(event,this)">✓ Markera klar</button>
+      </div></div>
+    </div>
+
+    <!-- 9 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">9</div>
+        <div class="card-icon">🐎</div>
+        <div class="card-info">
+          <div class="card-name">Häststance</div>
+          <div class="card-tags"><span class="tag">Ben</span><span class="tag">Fokus</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">45</div>
+          <div class="card-unit">sek</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🐎</div>
+          <div class="tip-text">Brett bensteg, knäna böjda i 90°, ryggen rak — som att sitta på en häst. Håll statiskt. Bygger benuthållighet och djup rotstyrka. Den statiska muskelspänningen pumpar aktivt lymfa i underbenen.</div>
+        </div>
+        <div class="timer-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 52 52" width="52" height="52">
+              <circle class="r-bg" cx="26" cy="26" r="22"/>
+              <circle class="r-prog" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="ring-num">45</div>
+          </div>
+          <button class="t-btn" onclick="startTimer(event,this,45)">Starta</button>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 10 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">10</div>
+        <div class="card-icon">👋</div>
+        <div class="card-info">
+          <div class="card-name">Överkroppstappning</div>
+          <div class="card-tags"><span class="tag">Armhålor</span><span class="tag">Bröstkorg</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">30</div>
+          <div class="card-unit">sek</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">👋</div>
+          <div class="tip-text">Klappa lätt med öppna händer längs armarna, armhålorna, bröstet och axlarna. Börja utifrån och rör dig mot hjärtat. Vibrationen aktiverar lymfflödet precis under huden och boostarnär immunsystemet.</div>
+        </div>
+        <div class="timer-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 52 52" width="52" height="52">
+              <circle class="r-bg" cx="26" cy="26" r="22"/>
+              <circle class="r-prog" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="ring-num">30</div>
+          </div>
+          <button class="t-btn" onclick="startTimer(event,this,30)">Starta</button>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 11 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">11</div>
+        <div class="card-icon">🦵</div>
+        <div class="card-info">
+          <div class="card-name">Underkroppstappning</div>
+          <div class="card-tags"><span class="tag">Ben</span><span class="tag">Ljumskar</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">30</div>
+          <div class="card-unit">sek</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🦵</div>
+          <div class="tip-text">Klappa längs låren, vaderna och ljumskarna — alltid uppåt mot hjärtat. Minskar inflammation, förbättrar cirkulationen och väcker upp musklerna. Effektivt för att minska tyngdkänsla i benen.</div>
+        </div>
+        <div class="timer-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 52 52" width="52" height="52">
+              <circle class="r-bg" cx="26" cy="26" r="22"/>
+              <circle class="r-prog" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="ring-num">30</div>
+          </div>
+          <button class="t-btn" onclick="startTimer(event,this,30)">Starta</button>
+        </div>
+      </div></div>
+    </div>
+
+    <!-- 12 -->
+    <div class="card" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-num">12</div>
+        <div class="card-icon">🙂</div>
+        <div class="card-info">
+          <div class="card-name">Ansiktstappning</div>
+          <div class="card-tags"><span class="tag">Ansikte</span><span class="tag">Hjärna</span></div>
+        </div>
+        <div class="card-right">
+          <div class="card-reps">20</div>
+          <div class="card-unit">sek</div>
+          <div class="done-badge">✓</div>
+        </div>
+      </div>
+      <div class="card-body"><div class="card-inner">
+        <div class="tip-box">
+          <div class="tip-icon">🙂</div>
+          <div class="tip-text">Klappa försiktigt med fingertopparna längs kindbenen, pannan, käklinjen och halsen. Rensa hjärndimma, minska stress och förbättra hudens lyster. Avsluta alltid med lätt tryck ned längs halsen mot nyckelbenet.</div>
+        </div>
+        <div class="timer-row">
+          <div class="ring-wrap">
+            <svg viewBox="0 0 52 52" width="52" height="52">
+              <circle class="r-bg" cx="26" cy="26" r="22"/>
+              <circle class="r-prog" cx="26" cy="26" r="22" stroke-dasharray="138.2" stroke-dashoffset="0"/>
+            </svg>
+            <div class="ring-num">20</div>
+          </div>
+          <button class="t-btn" onclick="startTimer(event,this,20)">Starta</button>
+        </div>
+      </div></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cta-wrap">
+  <button class="cta-btn" id="cta-btn" onclick="startFirst()">▶ Starta Mike Hollands lymfpass</button>
+</div>
+
+<script>
+  let doneCount = 0;
+  const total = 12;
+
+  function toggleCard(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  function fmt(s) {
+    const m = Math.floor(s/60), sec = s%60;
+    return m > 0 ? `${m}:${String(sec).padStart(2,'0')}` : `${sec}`;
+  }
+
+  function startTimer(e, btn, duration) {
+    e.stopPropagation();
+    const card = btn.closest('.card');
+    const numEl = card.querySelector('.ring-num');
+    const ring = card.querySelector('.r-prog');
+    const circum = 138.2;
+
+    if (btn.dataset.interval) {
+      clearInterval(parseInt(btn.dataset.interval));
+      btn.dataset.interval = '';
+      btn.textContent = 'Fortsätt';
+      btn.classList.remove('running');
+      return;
+    }
+    btn.classList.add('running');
+    btn.textContent = 'Paus';
+    let cur = parseInt(btn.dataset.remaining) || duration;
+
+    const iv = setInterval(() => {
+      cur--;
+      btn.dataset.remaining = cur;
+      numEl.textContent = fmt(cur);
+      ring.style.strokeDashoffset = circum * (1 - cur/duration);
+      if (cur <= 0) {
+        clearInterval(iv);
+        btn.dataset.interval = '';
+        btn.textContent = '✓ Klar!';
+        btn.classList.remove('running');
+        btn.classList.add('tdone');
+        markDone(card);
+        numEl.textContent = fmt(duration);
+        ring.style.strokeDashoffset = 0;
+      }
+    }, 1000);
+    btn.dataset.interval = iv;
+  }
+
+  function markDoneBtn(e, btn) {
+    e.stopPropagation();
+    const card = btn.closest('.card');
+    btn.textContent = '✓ Klar!';
+    btn.classList.add('completed');
+    markDone(card);
+  }
+
+  function markDone(card) {
+    if (!card.classList.contains('done-card')) {
+      card.classList.add('done-card');
+      doneCount++;
+      const dots = document.querySelectorAll('.prog-dot');
+      if (dots[doneCount-1]) dots[doneCount-1].classList.add('done');
+      document.getElementById('prog-text').textContent = doneCount + ' / ' + total + ' klara';
+      if (doneCount === total) {
+        const btn = document.getElementById('cta-btn');
+        btn.textContent = '🌊 Lymfsystemet är igång — bra jobbat!';
+        btn.style.background = 'linear-gradient(135deg, #2a8078, var(--gold, #c8a96e))';
+      }
+    }
+  }
+
+  function startFirst() {
+    const first = document.querySelector('.card:not(.done-card)');
+    if (!first) return;
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+    first.classList.add('open');
+    first.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+</script>
+</body>
+</html>

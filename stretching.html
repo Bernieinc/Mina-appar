@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vilodagens Stretching</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sage: #8fa88a;
+    --clay: #c4a882;
+    --cream: #f5f0e8;
+    --warm-white: #faf8f4;
+    --muted: #9b9488;
+    --dark: #2d2a25;
+    --card-bg: rgba(255,255,255,0.65);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background blobs */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background: var(--cream);
+    overflow: hidden;
+  }
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.35;
+    animation: float 12s ease-in-out infinite;
+  }
+  .blob1 { width: 500px; height: 500px; background: #b5c9b0; top: -100px; left: -150px; animation-delay: 0s; }
+  .blob2 { width: 400px; height: 400px; background: #d4bc96; bottom: -80px; right: -100px; animation-delay: 4s; }
+  .blob3 { width: 300px; height: 300px; background: #c9b8d4; top: 40%; left: 30%; animation-delay: 8s; }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(30px, -20px) scale(1.05); }
+  }
+
+  .app {
+    position: relative; z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 0 0 100px;
+    min-height: 100vh;
+  }
+
+  /* Header */
+  .header {
+    padding: 52px 24px 28px;
+    animation: fadeDown 0.7s ease both;
+  }
+  .header-tag {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sage);
+    margin-bottom: 6px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--dark);
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--clay);
+  }
+  .header-sub {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+
+  /* Category pills */
+  .pills {
+    display: flex;
+    gap: 8px;
+    padding: 0 24px 20px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .pills::-webkit-scrollbar { display: none; }
+  .pill {
+    flex-shrink: 0;
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1.5px solid rgba(143,168,138,0.35);
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.25s;
+    background: transparent;
+    white-space: nowrap;
+  }
+  .pill.active, .pill:hover {
+    background: var(--sage);
+    border-color: var(--sage);
+    color: #fff;
+  }
+
+  /* Section label */
+  .section-label {
+    padding: 0 24px 14px;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--clay);
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  /* Exercise cards */
+  .cards {
+    padding: 0 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,0.8);
+    box-shadow: 0 4px 24px rgba(45,42,37,0.06);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+    animation: fadeUp 0.6s ease both;
+  }
+  .card:nth-child(1) { animation-delay: 0.3s; }
+  .card:nth-child(2) { animation-delay: 0.4s; }
+  .card:nth-child(3) { animation-delay: 0.5s; }
+  .card:nth-child(4) { animation-delay: 0.6s; }
+  .card:nth-child(6) { animation-delay: 0.8s; }
+  .card:nth-child(7) { animation-delay: 0.9s; }
+  .card:nth-child(8) { animation-delay: 1.0s; }
+  .card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(45,42,37,0.1); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    padding: 16px 18px;
+    gap: 14px;
+  }
+
+  .card-icon {
+    width: 44px; height: 44px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .card-info { flex: 1; }
+  .card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .card-meta {
+    display: flex;
+    gap: 10px;
+    margin-top: 3px;
+  }
+  .meta-tag {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 300;
+  }
+  .meta-tag span {
+    display: inline-block;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--muted);
+    vertical-align: middle;
+    margin: 0 4px 1px;
+    opacity: 0.4;
+  }
+
+  .card-timer {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--clay);
+    flex-shrink: 0;
+  }
+
+  /* Expandable content */
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .card.open .card-body {
+    max-height: 400px;
+  }
+  .card-inner {
+    padding: 0 18px 18px;
+    border-top: 1px solid rgba(143,168,138,0.15);
+    padding-top: 14px;
+  }
+  .instruction {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #5a5650;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+
+  /* Timer UI */
+  .timer-wrap {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .timer-ring {
+    position: relative;
+    width: 56px; height: 56px;
+    flex-shrink: 0;
+  }
+  .timer-ring svg {
+    transform: rotate(-90deg);
+  }
+  .ring-bg { fill: none; stroke: rgba(143,168,138,0.2); stroke-width: 4; }
+  .ring-prog { fill: none; stroke: var(--sage); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .timer-num {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    color: var(--dark);
+  }
+  .timer-btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 12px;
+    border: 1.5px solid var(--sage);
+    background: transparent;
+    color: var(--sage);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .timer-btn:hover, .timer-btn.running {
+    background: var(--sage);
+    color: #fff;
+  }
+  .timer-btn.done {
+    background: var(--clay);
+    border-color: var(--clay);
+    color: #fff;
+  }
+
+  /* Progress bar at top */
+  .progress-bar {
+    padding: 0 24px 24px;
+    animation: fadeUp 0.7s 0.25s ease both;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 7px;
+  }
+  .bar-track {
+    height: 4px;
+    background: rgba(143,168,138,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--sage), var(--clay));
+    border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  /* Bottom CTA */
+  .cta-wrap {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 480px;
+    padding: 16px 24px 32px;
+    background: linear-gradient(to top, var(--cream) 70%, transparent);
+    z-index: 10;
+  }
+  .cta-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 16px;
+    border: none;
+    background: linear-gradient(135deg, var(--sage), #7a9975);
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    box-shadow: 0 8px 28px rgba(143,168,138,0.4);
+    transition: all 0.25s;
+  }
+  .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 36px rgba(143,168,138,0.5); }
+  .cta-btn:active { transform: none; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Done state */
+  .card.done-card .card-icon { filter: grayscale(0.3); }
+  .card.done-card .card-name { text-decoration: line-through; opacity: 0.5; }
+  .done-check {
+    color: var(--sage);
+    font-size: 18px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card.done-card .done-check { opacity: 1; }
+  .card.done-card .card-timer { display: none; }
+</style>
+</head>
+<body>
+
+<div class="bg">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+
+<div class="app">
+
+  <div class="header">
+    <div class="header-tag">Vilodag · Recovery</div>
+    <h1>Mjuk <em>rörlighet</em><br>för kroppen</h1>
+    <p class="header-sub">8 övningar · ~26 minuter</p>
+  </div>
+
+  <div class="pills">
+    <button class="pill active" onclick="filterCategory('alla')">Alla</button>
+    <button class="pill" onclick="filterCategory('höft')">Höft & rygg</button>
+    <button class="pill" onclick="filterCategory('axlar')">Axlar & nacke</button>
+    <button class="pill" onclick="filterCategory('ben')">Ben & lår</button>
+    <button class="pill" onclick="filterCategory('höftböjare')">Höftböjare</button>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-label">
+      <span>Framsteg</span>
+      <span id="prog-label">0 av 5 klara</span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="bar-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <div class="section-label">Börja här</div>
+
+  <div class="cards" id="cards">
+
+    <div class="card" data-category="höft" data-duration="60" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#edf3ec;">🧘</div>
+        <div class="card-info">
+          <div class="card-name">Barnets position</div>
+          <div class="card-meta">
+            <span class="meta-tag">Rygg<span></span>Höft</span>
+          </div>
+        </div>
+        <div class="card-timer">60s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Sitt på huk med stortårna ihop. Sänk sätesmusklerna mot hälarna och sträck armarna framåt. Andas djupt in och känn hur ryggraden förlängs för varje utandning.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="ben" data-duration="45" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#f5eee6;">🦵</div>
+        <div class="card-info">
+          <div class="card-name">Stående hamstrings</div>
+          <div class="card-meta">
+            <span class="meta-tag">Lår baksida<span></span>Vad</span>
+          </div>
+        </div>
+        <div class="card-timer">45s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Stå med raka ben, fötterna höftbrett isär. Böj dig sakta framåt med platt rygg. Låt händerna hänga fritt mot golvet. Håll positionen och andas ut i sträcket.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">45</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 45)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="höft" data-duration="60" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#ede9f5;">🌿</div>
+        <div class="card-info">
+          <div class="card-name">Duvasittning (Pigeon)</div>
+          <div class="card-meta">
+            <span class="meta-tag">Höft<span></span>Piriformis</span>
+          </div>
+        </div>
+        <div class="card-timer">60s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Från fyrfotaposition – dra höger knä mot höger handled. Sträck vänster ben rakt bakåt. Sänk höften mot golvet och håll överkroppen upprätt eller framåtlutad. Byt sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="axlar" data-duration="30" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#edf3f5;">💆</div>
+        <div class="card-info">
+          <div class="card-name">Nackstretching</div>
+          <div class="card-meta">
+            <span class="meta-tag">Nacke<span></span>Axlar</span>
+          </div>
+        </div>
+        <div class="card-timer">30s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Sitt rakt. Lut huvudet åt höger och lägg höger hand lätt ovanpå huvudet – utan att dra. Känn sträcket längs vänster nacke. Håll, andas och byt sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">30</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 30)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="höft" data-duration="90" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#f5ede9;">🌙</div>
+        <div class="card-info">
+          <div class="card-name">Liggande vridning</div>
+          <div class="card-meta">
+            <span class="meta-tag">Rygg<span></span>Bröstrygg</span>
+          </div>
+        </div>
+        <div class="card-timer">90s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Ligg på rygg, dra höger knä mot bröstet och låt det falla mot vänster sida. Sträck höger arm åt sidan och titta åt höger. Slappna av i varje utandning. Byt sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">90</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 90)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="höftböjare" data-duration="60" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#f0ede8;">🏃</div>
+        <div class="card-info">
+          <div class="card-name">Stående utfallssteg</div>
+          <div class="card-meta">
+            <span class="meta-tag">Höftböjare<span></span>Lår framsida</span>
+          </div>
+        </div>
+        <div class="card-timer">60s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Ta ett stort steg framåt. Sänk bakre knät mot golvet — håll frammets knä rakt ovanför vristen. Skjut höften framåt och nedåt tills du känner sträck i bakre benet framsida höft. Håll överkroppen rak. Byt sida och håll 60s per sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="höftböjare" data-duration="60" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#eef0e8;">🧎</div>
+        <div class="card-info">
+          <div class="card-name">Low Lunge (Dragon)</div>
+          <div class="card-meta">
+            <span class="meta-tag">Psoas<span></span>Iliacus</span>
+          </div>
+        </div>
+        <div class="card-timer">60s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Från utfallsposition — sänk bakre knät till golvet (gärna på matta). Skjut höften framåt och nedåt, lyft överkroppen och sträck armarna uppåt för djupare sträck. Andas ut i positionen. Det djupaste sträcket i psoas. Byt sida, 60s per sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-category="höftböjare" data-duration="45" onclick="toggleCard(this)">
+      <div class="card-header">
+        <div class="card-icon" style="background:#eae8f0;">🛌</div>
+        <div class="card-info">
+          <div class="card-name">Liggande höftböjare</div>
+          <div class="card-meta">
+            <span class="meta-tag">Höftböjare<span></span>Mjuk variant</span>
+          </div>
+        </div>
+        <div class="card-timer">45s</div>
+        <div class="done-check">✓</div>
+      </div>
+      <div class="card-body">
+        <div class="card-inner">
+          <p class="instruction">Ligg på rygg. Dra ett knä mot bröstet och håll fast med händerna. Det andra benet sträcks rakt ut mot golvet — pressa låret aktivt nedåt. Du ska känna sträck i framsidan på det utsträckta benets höft. Perfekt om du sitter mycket. Byt sida, 45s per sida.</p>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 56 56" width="56" height="56">
+                <circle class="ring-bg" cx="28" cy="28" r="24"/>
+                <circle class="ring-prog" cx="28" cy="28" r="24" stroke-dasharray="150.8" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">45</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 45)">Starta timer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="cta-wrap">
+  <button class="cta-btn" id="cta-btn" onclick="startAll()">▶ Starta hela passet</button>
+</div>
+
+<script>
+  let doneCount = 0;
+  const totalCards = 8;
+  let activeTimers = {};
+
+  function toggleCard(card) {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  }
+
+  function startTimer(e, btn, duration) {
+    e.stopPropagation();
+    const card = btn.closest('.card');
+    const numEl = card.querySelector('.timer-num');
+    const ringProg = card.querySelector('.ring-prog');
+    const circum = 150.8;
+    const id = Math.random().toString(36).slice(2);
+
+    if (btn.dataset.running) {
+      clearInterval(parseInt(btn.dataset.running));
+      btn.dataset.running = '';
+      btn.textContent = 'Fortsätt';
+      btn.classList.remove('running');
+      return;
+    }
+
+    btn.classList.add('running');
+    btn.textContent = 'Paus';
+
+    let remaining = parseInt(numEl.textContent) || duration;
+
+    const interval = setInterval(() => {
+      remaining--;
+      numEl.textContent = remaining;
+      const offset = circum * (1 - remaining / duration);
+      ringProg.style.strokeDashoffset = offset;
+
+      if (remaining <= 0) {
+        clearInterval(interval);
+        btn.textContent = '✓ Klar!';
+        btn.classList.remove('running');
+        btn.classList.add('done');
+        btn.dataset.running = '';
+        markDone(card);
+        numEl.textContent = duration;
+        ringProg.style.strokeDashoffset = 0;
+      }
+    }, 1000);
+
+    btn.dataset.running = interval;
+  }
+
+  function markDone(card) {
+    if (!card.classList.contains('done-card')) {
+      card.classList.add('done-card');
+      doneCount++;
+      updateProgress();
+    }
+  }
+
+  function updateProgress() {
+    const pct = (doneCount / totalCards) * 100;
+    document.getElementById('bar-fill').style.width = pct + '%';
+    document.getElementById('prog-label').textContent = doneCount + ' av ' + totalCards + ' klara';
+
+    if (doneCount === totalCards) {
+      document.getElementById('cta-btn').textContent = '🌿 Passet klart – bra jobbat!';
+      document.getElementById('cta-btn').style.background = 'linear-gradient(135deg, #c4a882, #b8976a)';
+    }
+  }
+
+  function startAll() {
+    const firstCard = document.querySelector('.card:not(.done-card)');
+    if (firstCard) {
+      document.querySelectorAll('.card').forEach(c => c.classList.remove('open'));
+      firstCard.classList.add('open');
+      firstCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      setTimeout(() => {
+        const btn = firstCard.querySelector('.timer-btn');
+        if (btn && !btn.classList.contains('done')) {
+          const dur = parseInt(firstCard.dataset.duration);
+          startTimer({ stopPropagation: () => {} }, btn, dur);
+        }
+      }, 500);
+    }
+  }
+
+  function filterCategory(cat) {
+    document.querySelectorAll('.pill').forEach(p => p.classList.remove('active'));
+    event.target.classList.add('active');
+
+    document.querySelectorAll('.card').forEach(card => {
+      if (cat === 'alla' || card.dataset.category === cat) {
+        card.style.display = '';
+      } else {
+        card.style.display = 'none';
+        card.classList.remove('open');
+      }
+    });
+  }
+</script>
+</body>
+</html>

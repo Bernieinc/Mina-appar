@@ -27,28 +27,23 @@
     overflow-x: hidden;
   }
 
-  /* Background grid */
   body::before {
     content: '';
-    position: fixed;
-    inset: 0;
-    background-image: 
+    position: fixed; inset: 0;
+    background-image:
       linear-gradient(rgba(232,255,71,0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(232,255,71,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
+    pointer-events: none; z-index: 0;
   }
 
   .wrapper {
-    position: relative;
-    z-index: 1;
+    position: relative; z-index: 1;
     max-width: 860px;
     margin: 0 auto;
     padding: 40px 20px 60px;
   }
 
-  /* Header */
   header {
     text-align: center;
     margin-bottom: 48px;
@@ -56,135 +51,61 @@
   }
 
   .eyebrow {
-    font-size: 11px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
+    font-size: 11px; letter-spacing: 4px;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
   }
 
   h1 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(52px, 10vw, 90px);
-    line-height: 0.9;
-    letter-spacing: 2px;
+    line-height: 0.9; letter-spacing: 2px;
   }
-
   h1 span { color: var(--accent); }
 
   .subtitle {
-    margin-top: 16px;
-    color: var(--muted);
-    font-size: 14px;
-    font-weight: 300;
-    letter-spacing: 0.5px;
+    margin-top: 16px; color: var(--muted);
+    font-size: 14px; font-weight: 300; letter-spacing: 0.5px;
   }
 
-  /* Stats bar */
   .stats {
-    display: flex;
-    gap: 1px;
-    background: var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 40px;
+    display: flex; gap: 1px;
+    background: var(--border); border-radius: 12px;
+    overflow: hidden; margin-bottom: 40px;
     animation: fadeUp 0.6s 0.2s ease both;
   }
+  .stat { flex: 1; background: var(--card); padding: 16px 12px; text-align: center; }
+  .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); line-height: 1; }
+  .stat-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
 
-  .stat {
-    flex: 1;
-    background: var(--card);
-    padding: 16px 12px;
-    text-align: center;
-  }
-
-  .stat-val {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-
-  /* Tabs */
   .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    animation: fadeUp 0.6s 0.3s ease both;
-    flex-wrap: wrap;
+    display: flex; gap: 8px; margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.3s ease both; flex-wrap: wrap;
   }
-
   .tab {
-    padding: 8px 20px;
-    border-radius: 100px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--card);
-    color: var(--muted);
-    transition: all 0.2s;
-    letter-spacing: 0.5px;
+    padding: 8px 20px; border-radius: 100px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    border: 1px solid var(--border); background: var(--card);
+    color: var(--muted); transition: all 0.2s; letter-spacing: 0.5px;
   }
+  .tab.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+  .tab:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
 
-  .tab.active {
-    background: var(--accent);
-    color: #000;
-    border-color: var(--accent);
-    font-weight: 600;
-  }
-
-  .tab:hover:not(.active) {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-
-  /* Day panels */
   .day-panel { display: none; }
   .day-panel.active { display: block; animation: fadeUp 0.4s ease both; }
 
   .day-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 20px;
-    padding-bottom: 16px;
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 20px; padding-bottom: 16px;
     border-bottom: 1px solid var(--border);
   }
-
   .day-badge {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    padding: 6px 14px;
-    border-radius: 6px;
-    background: var(--accent);
-    color: #000;
+    font-family: 'Bebas Neue', sans-serif; font-size: 13px;
+    letter-spacing: 2px; padding: 6px 14px; border-radius: 6px;
+    background: var(--accent); color: #000;
   }
-
   .day-badge.rest { background: var(--border); color: var(--muted); }
-
-  .day-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 1px;
-  }
-
-  .day-focus {
-    margin-left: auto;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
+  .day-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; }
+  .day-focus { margin-left: auto; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
 
   /* Exercise cards */
   .exercises { display: flex; flex-direction: column; gap: 10px; }
@@ -193,129 +114,129 @@
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.2s;
+    animation: slideIn 0.4s ease both;
+  }
+  .ex-card:hover { border-color: var(--accent); }
+  .ex-card.open { border-color: rgba(232,255,71,0.5); }
+
+  .ex-card:nth-child(1) { animation-delay: 0.05s; }
+  .ex-card:nth-child(2) { animation-delay: 0.10s; }
+  .ex-card:nth-child(3) { animation-delay: 0.15s; }
+  .ex-card:nth-child(4) { animation-delay: 0.20s; }
+  .ex-card:nth-child(5) { animation-delay: 0.25s; }
+  .ex-card:nth-child(6) { animation-delay: 0.30s; }
+  .ex-card:nth-child(7) { animation-delay: 0.35s; }
+
+  .ex-main {
     padding: 16px 20px;
     display: grid;
     grid-template-columns: 1fr auto;
     align-items: center;
     gap: 12px;
-    transition: border-color 0.2s, transform 0.2s;
-    animation: slideIn 0.4s ease both;
   }
 
-  .ex-card:hover {
-    border-color: var(--accent);
-    transform: translateX(4px);
-  }
+  .ex-name { font-weight: 500; font-size: 15px; }
+  .ex-tip { font-size: 12px; color: var(--muted); margin-top: 3px; }
 
-  .ex-card:nth-child(1) { animation-delay: 0.05s; }
-  .ex-card:nth-child(2) { animation-delay: 0.1s; }
-  .ex-card:nth-child(3) { animation-delay: 0.15s; }
-  .ex-card:nth-child(4) { animation-delay: 0.2s; }
-  .ex-card:nth-child(5) { animation-delay: 0.25s; }
-  .ex-card:nth-child(6) { animation-delay: 0.3s; }
-  .ex-card:nth-child(7) { animation-delay: 0.35s; }
+  .ex-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+  .ex-sets { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--accent); line-height: 1; }
+  .ex-reps { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
 
-  .ex-name {
-    font-weight: 500;
-    font-size: 15px;
-  }
-
-  .ex-tip {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 3px;
-  }
-
-  .ex-meta {
-    text-align: right;
-  }
-
-  .ex-sets {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    line-height: 1;
-  }
-
-  .ex-reps {
-    font-size: 11px;
-    color: var(--muted);
+  /* Expand indicator */
+  .ex-chevron {
+    font-size: 10px; color: var(--muted);
+    transition: transform 0.3s; margin-top: 2px;
     letter-spacing: 1px;
   }
+  .ex-card.open .ex-chevron { transform: rotate(180deg); }
 
   .tag {
-    display: inline-block;
-    font-size: 9px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 2px 8px;
-    border-radius: 4px;
-    margin-top: 6px;
+    display: inline-block; font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; padding: 2px 8px;
+    border-radius: 4px; margin-top: 6px;
+  }
+  .tag-abs { background: rgba(232,255,71,0.12); color: var(--accent); }
+  .tag-bi  { background: rgba(255,71,87,0.12);  color: var(--accent2); }
+  .tag-comp{ background: rgba(255,255,255,0.06); color: var(--muted); }
+
+  /* Instruction panel */
+  .ex-instructions {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4,0,0.2,1);
+    border-top: 0px solid var(--border);
+  }
+  .ex-card.open .ex-instructions {
+    max-height: 500px;
+    border-top: 1px solid var(--border);
   }
 
-  .tag-abs { background: rgba(232,255,71,0.12); color: var(--accent); }
-  .tag-bi { background: rgba(255,71,87,0.12); color: var(--accent2); }
-  .tag-comp { background: rgba(255,255,255,0.06); color: var(--muted); }
+  .ex-instructions-inner {
+    padding: 16px 20px 18px;
+  }
+
+  .inst-steps {
+    list-style: none;
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 12px;
+  }
+  .inst-steps li {
+    display: flex; gap: 10px;
+    font-size: 13px; line-height: 1.6; color: #c8c8c8; font-weight: 300;
+  }
+  .step-num {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(232,255,71,0.12);
+    color: var(--accent);
+    font-size: 10px; font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  .inst-focus {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;
+  }
+  .focus-tag {
+    font-size: 10px; padding: 3px 9px; border-radius: 20px;
+    background: rgba(255,255,255,0.05); color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  .inst-warning {
+    margin-top: 10px;
+    display: flex; gap: 8px; align-items: flex-start;
+    background: rgba(255,71,87,0.07);
+    border-left: 2px solid var(--accent2);
+    border-radius: 0 6px 6px 0;
+    padding: 8px 10px;
+    font-size: 12px; color: #ff9aa2; font-weight: 300; line-height: 1.5;
+  }
 
   /* Rest day */
   .rest-card {
-    background: var(--card);
-    border: 1px dashed var(--border);
-    border-radius: 12px;
-    padding: 40px;
-    text-align: center;
+    background: var(--card); border: 1px dashed var(--border);
+    border-radius: 12px; padding: 40px; text-align: center;
   }
-
   .rest-icon { font-size: 40px; margin-bottom: 12px; }
   .rest-title { font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 1px; color: var(--muted); }
   .rest-text { font-size: 13px; color: var(--muted); margin-top: 8px; font-weight: 300; }
 
-  /* Tips section */
-  .tips {
-    margin-top: 40px;
-    animation: fadeUp 0.6s 0.4s ease both;
-  }
-
-  .tips-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 2px;
-    margin-bottom: 16px;
-    color: var(--muted);
-  }
-
-  .tips-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-  }
-
-  .tip-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px;
-  }
-
+  /* Tips */
+  .tips { margin-top: 40px; animation: fadeUp 0.6s 0.4s ease both; }
+  .tips-title { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 2px; margin-bottom: 16px; color: var(--muted); }
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+  .tip-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
   .tip-icon { font-size: 20px; margin-bottom: 8px; }
   .tip-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
   .tip-text { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
 
-  /* Animations */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes slideIn {
-    from { opacity: 0; transform: translateX(-12px); }
-    to { opacity: 1; transform: translateX(0); }
-  }
+  @keyframes fadeDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(16px);}  to{opacity:1;transform:translateY(0);} }
+  @keyframes slideIn  { from{opacity:0;transform:translateX(-12px);} to{opacity:1;transform:translateX(0);} }
 </style>
 </head>
 <body>
@@ -335,10 +256,10 @@
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="showDay('dag1', this)">Dag 1 · Mån</div>
-    <div class="tab" onclick="showDay('dag2', this)">Dag 2 · Ons</div>
-    <div class="tab" onclick="showDay('dag3', this)">Dag 3 · Fre</div>
-    <div class="tab" onclick="showDay('vila', this)">Vila</div>
+    <div class="tab active" onclick="showDay('dag1',this)">Dag 1 · Mån</div>
+    <div class="tab" onclick="showDay('dag2',this)">Dag 2 · Ons</div>
+    <div class="tab" onclick="showDay('dag3',this)">Dag 3 · Fre</div>
+    <div class="tab" onclick="showDay('vila',this)">Vila</div>
   </div>
 
   <!-- DAG 1 -->
@@ -349,72 +270,159 @@
       <span class="day-focus">Styrka</span>
     </div>
     <div class="exercises">
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Hantelcurl (stående)</div>
-          <div class="ex-tip">Håll armbågen stilla – rör bara underarmen</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Hantelcurl (stående)</div>
+            <div class="ex-tip">Håll armbågen stilla – rör bara underarmen</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">8–10 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">8–10 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå med fötterna höftbrett isär, en hantel i varje hand med handflatorna framåt (supinerat grepp).</li>
+            <li><span class="step-num">2</span>Pressa armbågarna mot sidan av kroppen — de ska inte röra sig under hela övningen.</li>
+            <li><span class="step-num">3</span>Curl upp ena hanteln mot axeln med en kontrollerad rörelse. Knip ihop biceps hårt i toppläget.</li>
+            <li><span class="step-num">4</span>Sänk långsamt (2–3 sek) tillbaka till startposition. Sträck ut armen helt för maximalt rörelseutslag.</li>
+            <li><span class="step-num">5</span>Alternera armar eller gör båda samtidigt.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span><span class="focus-tag">Supinator</span></div>
+          <div class="inst-warning">⚠ Undvik att svinga med överkroppen för att hjälpa upp vikten — det tar bort spänningen från biceps.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Hammarcurl</div>
-          <div class="ex-tip">Aktiverar brachialis – ger bredare arm</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Hammarcurl</div>
+            <div class="ex-tip">Aktiverar brachialis – ger bredare arm</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">10–12 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå upprätt med en hantel i varje hand, handflatorna mot kroppen (neutralt grepp — som att hålla en hammare).</li>
+            <li><span class="step-num">2</span>Håll armbågarna nära kroppen och curl upp hantlarna mot axlarna utan att vrida handleden.</li>
+            <li><span class="step-num">3</span>Håll kvar ett ögonblick i toppläget och sänk kontrollerat.</li>
+            <li><span class="step-num">4</span>Kan göras alternerande eller simultant.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Brachialis</span><span class="focus-tag">Brachioradialis</span><span class="focus-tag">Biceps brachii</span></div>
+          <div class="inst-warning">⚠ Det neutrala greppet belastar brachialis mer än vanlig curl — använd ofta lite tyngre vikt än vid hantelcurl.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Bänkpress (skivstång)</div>
-          <div class="ex-tip">Sänk kontrollerat, pressa explosivt</div>
-          <span class="tag tag-comp">Compound</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Bänkpress (skivstång)</div>
+            <div class="ex-tip">Sänk kontrollerat, pressa explosivt</div>
+            <span class="tag tag-comp">Compound</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">6–8 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">6–8 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på bänken med ögonen under stången. Fötterna platt i golvet, lätt böjda knän. Dra ihop skulderbladen och pressa dem mot bänken.</li>
+            <li><span class="step-num">2</span>Ta ett grepp något bredare än axelbrett. Handlederna ska vara raka — ej bakåtböjda.</li>
+            <li><span class="step-num">3</span>Lyft stången ur stativet, ta ett djupt andetag och håll andan (Valsalva) — detta stabiliserar ryggraden.</li>
+            <li><span class="step-num">4</span>Sänk stången kontrollerat mot nedre delen av bröstkorgen (inte halsen). Ca 2 sekunder ner.</li>
+            <li><span class="step-num">5</span>Pressa explosivt upp och andas ut i toppläget.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Pectoralis major</span><span class="focus-tag">Triceps</span><span class="focus-tag">Främre deltoid</span></div>
+          <div class="inst-warning">⚠ Använd alltid säkerhetsstativ eller en spotter vid tunga vikter. Stången ska aldrig bounca mot bröstkorgen.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Crunches (viktat)</div>
-          <div class="ex-tip">Håll spänning hela rörelsen – inga ryck</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Crunches (viktat)</div>
+            <div class="ex-tip">Håll spänning hela rörelsen – inga ryck</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">15–20 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">15–20 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på rygg, knän böjda, fötterna i golvet. Håll en viktplatta mot bröstet eller bakom huvudet.</li>
+            <li><span class="step-num">2</span>Pressa nedre ryggen mot golvet — detta är nyckelposition.</li>
+            <li><span class="step-num">3</span>Andas ut och curl överkroppen uppåt genom att dra hakan mot knäna. Skulderbladen lyfter från golvet, men inte hela ryggen.</li>
+            <li><span class="step-num">4</span>Håll kvar spänningen 1 sek i toppläget. Andas in och sänk kontrollerat.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Yttre oblique</span></div>
+          <div class="inst-warning">⚠ Dra inte i nacken med händerna — det belastar cervikalryggen. Låt magen göra jobbet.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Leg Raises</div>
-          <div class="ex-tip">Pressa nedre ryggen mot golvet</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Leg Raises</div>
+            <div class="ex-tip">Pressa nedre ryggen mot golvet</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">12–15 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">12–15 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på rygg med benen raka och händerna under sätesmusklerna (eller längs sidan).</li>
+            <li><span class="step-num">2</span>Pressa nedre ryggen aktivt mot golvet — detta är avgörande för att skydda ländryggen.</li>
+            <li><span class="step-num">3</span>Andas ut och lyft benen rakt upp till ca 90°. Håll benen raka eller lätt böjda.</li>
+            <li><span class="step-num">4</span>Sänk benen kontrollerat — stanna precis innan hälarna nuddar golvet. Upprepa.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Nedre rectus abdominis</span><span class="focus-tag">Höftflexorer</span><span class="focus-tag">Iliopsoas</span></div>
+          <div class="inst-warning">⚠ Gör inte övningen om ryggen lyfter från golvet — böj knäna något för att minska belastningen tills du är starkare.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Planka</div>
-          <div class="ex-tip">Spänn rumpan och andas normalt</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Planka</div>
+            <div class="ex-tip">Spänn rumpan och andas normalt</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">30–60 sek</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">30–60 sek</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stöd på underarmarna (armbågarna under axlarna) och tårna. Kroppen rak som en planka från huvud till häl.</li>
+            <li><span class="step-num">2</span>Spänn magen, gluteus och låren samtidigt. Knip navel mot ryggraden.</li>
+            <li><span class="step-num">3</span>Titta ned mot golvet — neutral nackposition. Andas kontrollerat under hela håll-perioden.</li>
+            <li><span class="step-num">4</span>Håll positionen utan att tappa formen. Bättre 20 sek med rätt form än 60 sek med sjunkande höfter.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Core stabilisatorer</span><span class="focus-tag">Gluteus</span></div>
+          <div class="inst-warning">⚠ Undvik att höften sjunker ned eller pekar upp som ett tält — båda tar bort effekten och belastar ryggen felaktigt.</div>
+        </div></div>
       </div>
+
     </div>
   </div>
 
@@ -426,72 +434,155 @@
       <span class="day-focus">Volym</span>
     </div>
     <div class="exercises">
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Barbell Row (framsida böjd)</div>
-          <div class="ex-tip">Drag mot naveln, håll ryggen rak</div>
-          <span class="tag tag-comp">Compound</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Barbell Row (framsida böjd)</div>
+            <div class="ex-tip">Drag mot naveln, håll ryggen rak</div>
+            <span class="tag tag-comp">Compound</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">6–8 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">6–8 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå med fötterna höftbrett isär. Böj framåt i höften (ej ryggen) tills överkroppen är ca 45° mot golvet. Håll ryggen helt rak.</li>
+            <li><span class="step-num">2</span>Grepp stången axelbrett med överhands- eller underhandsgrepp. Armar raka i startposition.</li>
+            <li><span class="step-num">3</span>Andas ut och dra stången mot naveln/nedre magen. Knip ihop skulderbladen i toppläget.</li>
+            <li><span class="step-num">4</span>Sänk kontrollerat tillbaka. Håll spänningen i core under hela rörelsen.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Latissimus dorsi</span><span class="focus-tag">Rhomboids</span><span class="focus-tag">Biceps</span><span class="focus-tag">Bakre deltoid</span></div>
+          <div class="inst-warning">⚠ Rund rygg under tung barbell row är en vanlig skaderisk. Lägg hellre på mindre vikt och behåll neutral ryggrad.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Koncentrationscurl</div>
-          <div class="ex-tip">Isolerat – perfekt för peak</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Koncentrationscurl</div>
+            <div class="ex-tip">Isolerat – perfekt för peak</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">10–12 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Sitt på bänken med benen brett isär. Luta framåt och stötta armbågen mot insidan av låret.</li>
+            <li><span class="step-num">2</span>Håll hanteln med handflatan uppåt. Armen sträckt i startposition.</li>
+            <li><span class="step-num">3</span>Curl upp hanteln mot axeln med full koncentration på bicepsrörelsenen. Vrid handleden lätt utåt (supination) i toppläget för maximal kontraktion.</li>
+            <li><span class="step-num">4</span>Sänk mycket långsamt — det excentrta fasen bygger mest muskelmassa.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii (peak)</span><span class="focus-tag">Brachialis</span></div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Kabeldragning (biceps)</div>
-          <div class="ex-tip">Konstant spänning hela rörelsen</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Kabeldragning (biceps)</div>
+            <div class="ex-tip">Konstant spänning hela rörelsen</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">12–15 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">12–15 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ställ kabelmaskinen på lägsta position. Fäst ett handtag eller EZ-bar. Stå nära maskinen.</li>
+            <li><span class="step-num">2</span>Ta tag med supinerat grepp, armbågarna nära kroppen.</li>
+            <li><span class="step-num">3</span>Curl upp mot axlarna — kabeln ger konstant motstånd hela vägen till toppläget, till skillnad från hantlar.</li>
+            <li><span class="step-num">4</span>Sänk sakta och känn den fulla sträckningen. Upprepa utan att tappa spänning.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span></div>
+          <div class="inst-warning">⚠ Kabelövningar är utmärkta som avslutande pumpövning — kör gärna med lättare vikt och högre reps (15–20).</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Russian Twist (viktat)</div>
-          <div class="ex-tip">Rör skuldror, ej armar – vrider obliquerna</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Russian Twist (viktat)</div>
+            <div class="ex-tip">Rör skuldror, ej armar – vrider obliquerna</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">20 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">20 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Sitt på golvet, knän lätt böjda, fötterna lätt lyfta (eller i golvet för nybörjare). Luta överkroppen bakåt ca 45°.</li>
+            <li><span class="step-num">2</span>Håll en viktplatta, kettlebell eller medicinboll framför bröstkorgen.</li>
+            <li><span class="step-num">3</span>Vrid hela överkroppen (inte bara armarna) åt höger tills vikten nästan nuddar golvet. Tillbaka till mitten och sedan vänster. Det är 1 rep.</li>
+            <li><span class="step-num">4</span>Håll magen spänd och andas kontrollerat under hela rörelsen.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Inre & yttre oblique</span><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Hip flexors</span></div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Cable Crunch</div>
-          <div class="ex-tip">Böj i höften, krama ihop magen</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Cable Crunch</div>
+            <div class="ex-tip">Böj i höften, krama ihop magen</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">15 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">15 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Fäst ett rephandtag högt i kabelmaskinen. Knäböj framför maskinen, håll handtaget bakom/vid öronen.</li>
+            <li><span class="step-num">2</span>Håll höfterna stilla — rörelsen sker bara i ryggraden, ej i höften.</li>
+            <li><span class="step-num">3</span>Andas ut och curl överkroppen nedåt — försök att trycka armbågarna mot knäna. Känn att magen verkligen dras ihop.</li>
+            <li><span class="step-num">4</span>Håll 1 sek i botten, sträck upp kontrollerat och upprepa.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Övre mage</span></div>
+          <div class="inst-warning">⚠ Vanligt misstag: röra höfterna istället för att curla ryggraden. Låt höfterna vara stilla och tänk på att dra naveln mot knäna.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Hollow Body Hold</div>
-          <div class="ex-tip">Tryck ryggen i golvet hela tiden</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Hollow Body Hold</div>
+            <div class="ex-tip">Tryck ryggen i golvet hela tiden</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">20–30 sek</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">20–30 sek</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på rygg. Pressa hela ryggen mot golvet — inga luftfickor under ländryggen.</li>
+            <li><span class="step-num">2</span>Lyft benen till ca 30–45° och armarna rakt upp (eller bakom huvudet för svårare variant).</li>
+            <li><span class="step-num">3</span>Håll positionen statiskt med magen ihopkramd. Andas grunt men kontinuerligt.</li>
+            <li><span class="step-num">4</span>Om ryggen lyfter — höj benen lite tills du är starkare.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Hip flexors</span></div>
+          <div class="inst-warning">⚠ Det är en statisk övning — kvaliteten på positionen är viktigare än hur länge du håller. Ryggen MOT golvet hela tiden.</div>
+        </div></div>
       </div>
+
     </div>
   </div>
 
@@ -503,72 +594,157 @@
       <span class="day-focus">Intensitet</span>
     </div>
     <div class="exercises">
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Axelpress (hantel, stående)</div>
-          <div class="ex-tip">Pressa rakt upp – spänn core</div>
-          <span class="tag tag-comp">Compound</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Axelpress (hantel, stående)</div>
+            <div class="ex-tip">Pressa rakt upp – spänn core</div>
+            <span class="tag tag-comp">Compound</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">8–10 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">8–10 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå med fötterna axelbrett isär. Håll hantlarna i axelhöjd med handflatorna framåt, armbågarna böjda 90°.</li>
+            <li><span class="step-num">2</span>Spänn core och gluteus för att stabilisera ryggraden — ingen svank i ländryggen.</li>
+            <li><span class="step-num">3</span>Pressa hantlarna rakt upp tills armarna nästan är utsträckta. Undvik att låsa ut armbågarna helt.</li>
+            <li><span class="step-num">4</span>Sänk kontrollerat tillbaka till startposition. Håll tempo 2 sek upp, 3 sek ner.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Deltoideus (främre & mitre)</span><span class="focus-tag">Triceps</span><span class="focus-tag">Trapezius</span></div>
+          <div class="inst-warning">⚠ Stående variant aktiverar core mer men kräver god ryggstabilitet. Byt till sittande om du känner smärta i ländryggen.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Incline Curl (lutande bänk)</div>
-          <div class="ex-tip">Lång sträckning = maximal bicepsaktivering</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Incline Curl (lutande bänk)</div>
+            <div class="ex-tip">Lång sträckning = maximal bicepsaktivering</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">4</div>
-          <div class="ex-reps">10–12 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ställ in bänken på 45–60°. Luta dig tillbaka med en hantel i varje hand, armarna hängande rakt ned längs bänken.</li>
+            <li><span class="step-num">2</span>Den bakåtlutade positionen ger en lång stretch i biceps — det är det som gör övningen unik.</li>
+            <li><span class="step-num">3</span>Curl upp hantlarna mot axlarna. Håll armbågarna stilla — de ska inte röra sig framåt.</li>
+            <li><span class="step-num">4</span>Sänk extra långsamt (3–4 sek) för att maximera den excentrska fasen.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii (långt huvud)</span><span class="focus-tag">Brachialis</span></div>
+          <div class="inst-warning">⚠ Använd lättare vikt än vanlig curl — det längre rörelseutslaget är hårdare för biceps. Prioritera form framför tyngd.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">21:or (curl-variant)</div>
-          <div class="ex-tip">7 nere, 7 uppe, 7 fulla – brinner garanterat</div>
-          <span class="tag tag-bi">Biceps</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">21:or (curl-variant)</div>
+            <div class="ex-tip">7 nere, 7 uppe, 7 fulla – brinner garanterat</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">21 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">21 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span><strong style="color:#e8ff47">7 nedre halvan:</strong> Curl från utsträckt arm upp till 90° (halvvägs). Armbågen stannar vid sidan. Upprepa 7 gånger.</li>
+            <li><span class="step-num">2</span><strong style="color:#e8ff47">7 övre halvan:</strong> Curl från 90° upp till axeln (övre halvan). Upprepa 7 gånger.</li>
+            <li><span class="step-num">3</span><strong style="color:#e8ff47">7 fulla reps:</strong> Hela rörelseutslaget nerifrån upp. Upprepa 7 gånger.</li>
+            <li><span class="step-num">4</span>Pausa inte mellan de tre faserna — kör dem direkt efter varandra.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span><span class="focus-tag">Uthållighet</span></div>
+          <div class="inst-warning">⚠ Välj lättare vikt än vanlig curl — du gör 21 reps utan paus. Tekniken ska hålla hela vägen igenom.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Dragon Flag (eller negativ)</div>
-          <div class="ex-tip">Håll kroppen rak som en planka</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Dragon Flag (eller negativ)</div>
+            <div class="ex-tip">Håll kroppen rak som en planka</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">5–8 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">5–8 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på en bänk och håll tag om kanten bakom huvudet med båda händerna.</li>
+            <li><span class="step-num">2</span>Lyft kroppen uppåt tills den är helt vertikal — bara skuldrorna har kontakt med bänken. Hela kroppen rak som en planka.</li>
+            <li><span class="step-num">3</span>Sänk kroppen extremt långsamt och kontrollerat (3–5 sek) utan att böja i höften. Hela rörelsen sker i ett stycke.</li>
+            <li><span class="step-num">4</span><strong style="color:var(--accent)">Nybörjarvariant (negativ):</strong> Börja i toppläget och sänk enbart — hoppa upp till start igen.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Hela core</span><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Hip flexors</span><span class="focus-tag">Stabilisatorer</span></div>
+          <div class="inst-warning">⚠ En av de svåraste mageövningarna som finns. Börja alltid med negativa reps tills du byggt tillräcklig styrka.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Ab Wheel Rollout</div>
-          <div class="ex-tip">Sänk kontrollerat – rulla ut lagom långt</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Ab Wheel Rollout</div>
+            <div class="ex-tip">Sänk kontrollerat – rulla ut lagom långt</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">8–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">8–12 reps</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Knäböj på golvet med ab wheel framför dig. Håll ryggen rak och core spänt.</li>
+            <li><span class="step-num">2</span>Rulla hjulet framåt och sänk kroppen mot golvet — håll höfterna uppe (ej in i golvet).</li>
+            <li><span class="step-num">3</span>Rulla ut tills du kan hålla positionen utan att ryggen sjunker. Det är din maxpunkt.</li>
+            <li><span class="step-num">4</span>Dra tillbaka hjulet mot knäna med magen — det är den svåraste fasen. Andas ut när du drar tillbaka.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Latissimus dorsi</span></div>
+          <div class="inst-warning">⚠ Rulla aldrig ut längre än du kan kontrollera. Ländryggssmärta är ett tecken på att du rullat för långt — kortare utslag är bättre.</div>
+        </div></div>
       </div>
-      <div class="ex-card">
-        <div>
-          <div class="ex-name">Side Planka</div>
-          <div class="ex-tip">Höft rakt upp – ingen sänkning</div>
-          <span class="tag tag-abs">Mage</span>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Side Planka</div>
+            <div class="ex-tip">Höft rakt upp – ingen sänkning</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">30 sek/sida</div>
+            <div class="ex-chevron">▼</div>
+          </div>
         </div>
-        <div class="ex-meta">
-          <div class="ex-sets">3</div>
-          <div class="ex-reps">30 sek/sida</div>
-        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stötta på underarmen (armbågen under axeln) och sidan av foten. Kroppen rak i sidled.</li>
+            <li><span class="step-num">2</span>Lyft höften upp tills kroppen bildar en rak linje — höft, axel och fot i linje.</li>
+            <li><span class="step-num">3</span>Spänn obliquerna (sidmagen) aktivt. Fri arm längs kroppen eller mot taket.</li>
+            <li><span class="step-num">4</span>Håll positionen stabilt. Byt sida efter 30 sek.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Yttre & inre oblique</span><span class="focus-tag">Gluteus medius</span><span class="focus-tag">Quadratus lumborum</span></div>
+          <div class="inst-warning">⚠ Höften ska varken sjunka ned eller peka upp — exakt rät linje är målet. Kvalitet över tid.</div>
+        </div></div>
       </div>
+
     </div>
   </div>
 
@@ -577,7 +753,7 @@
     <div class="day-header">
       <span class="day-badge rest">VILA</span>
       <span class="day-title">Återhämtning</span>
-      <span class="day-focus">Tisdag · Torsdag · Lördag · Söndag</span>
+      <span class="day-focus">Tis · Tor · Lör · Sön</span>
     </div>
     <div class="rest-card">
       <div class="rest-icon">💤</div>
@@ -621,6 +797,13 @@
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     tab.classList.add('active');
+  }
+
+  function toggleEx(card) {
+    const isOpen = card.classList.contains('open');
+    // Close all in same panel
+    card.closest('.exercises').querySelectorAll('.ex-card').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
   }
 </script>
 </body>

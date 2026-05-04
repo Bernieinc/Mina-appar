@@ -234,6 +234,65 @@
   .tip-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
   .tip-text { font-size: 12px; color: var(--muted); line-height: 1.5; font-weight: 300; }
 
+  /* Timer */
+  .timer-wrap {
+    display: flex; align-items: center; gap: 14px;
+    margin-top: 14px; padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .timer-ring { position: relative; width: 60px; height: 60px; flex-shrink: 0; }
+  .timer-ring svg { transform: rotate(-90deg); }
+  .t-ring-bg  { fill: none; stroke: rgba(232,255,71,0.12); stroke-width: 4; }
+  .t-ring-prog{ fill: none; stroke: var(--accent); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .timer-num  {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Bebas Neue', sans-serif; font-size: 17px; color: var(--accent);
+    letter-spacing: 1px;
+  }
+  .timer-btn {
+    flex: 1; padding: 11px;
+    border-radius: 8px; border: 1px solid rgba(232,255,71,0.3);
+    background: transparent; color: var(--accent);
+    font-family: 'DM Sans', sans-serif; font-size: 13px;
+    letter-spacing: 0.5px; cursor: pointer; transition: all 0.2s;
+  }
+  .timer-btn:hover, .timer-btn.running {
+    background: rgba(232,255,71,0.12); border-color: var(--accent);
+  }
+  .timer-btn.done {
+    background: rgba(232,255,71,0.15); border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* Alarm overlay */
+  .alarm-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9000;
+    background: rgba(0,0,0,0.85);
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+    animation: alarmPop 0.3s ease;
+  }
+  .alarm-overlay.show { display: flex; }
+  .alarm-icon { font-size: 64px; animation: alarmBounce 0.5s ease infinite alternate; }
+  .alarm-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px; letter-spacing: 3px; color: var(--accent);
+  }
+  .alarm-sub { font-size: 14px; color: var(--muted); }
+  .alarm-dismiss {
+    margin-top: 8px; padding: 12px 32px;
+    border-radius: 8px; border: 1px solid var(--accent);
+    background: var(--accent); color: #000;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s;
+  }
+  .alarm-dismiss:hover { opacity: 0.85; }
+
+  @keyframes alarmPop { from{opacity:0;transform:scale(0.8);} to{opacity:1;transform:scale(1);} }
+  @keyframes alarmBounce { from{transform:scale(1);} to{transform:scale(1.2);} }
+
   @keyframes fadeDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
   @keyframes fadeUp   { from{opacity:0;transform:translateY(16px);}  to{opacity:1;transform:translateY(0);} }
   @keyframes slideIn  { from{opacity:0;transform:translateX(-12px);} to{opacity:1;transform:translateX(0);} }
@@ -420,6 +479,16 @@
           </ol>
           <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Core stabilisatorer</span><span class="focus-tag">Gluteus</span></div>
           <div class="inst-warning">⚠ Undvik att höften sjunker ned eller pekar upp som ett tält — båda tar bort effekten och belastar ryggen felaktigt.</div>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 60 60" width="60" height="60">
+                <circle class="t-ring-bg" cx="30" cy="30" r="26"/>
+                <circle class="t-ring-prog" cx="30" cy="30" r="26" stroke-dasharray="163.4" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60s</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60, 'Planka klar – vila!')">▶ Starta 60 sek</button>
+          </div>
         </div></div>
       </div>
 
@@ -580,6 +649,16 @@
           </ol>
           <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Rectus abdominis</span><span class="focus-tag">Hip flexors</span></div>
           <div class="inst-warning">⚠ Det är en statisk övning — kvaliteten på positionen är viktigare än hur länge du håller. Ryggen MOT golvet hela tiden.</div>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 60 60" width="60" height="60">
+                <circle class="t-ring-bg" cx="30" cy="30" r="26"/>
+                <circle class="t-ring-prog" cx="30" cy="30" r="26" stroke-dasharray="163.4" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">30s</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 30, 'Hollow Body Hold klar – vila!')">▶ Starta 30 sek</button>
+          </div>
         </div></div>
       </div>
 
@@ -742,6 +821,16 @@
           </ol>
           <div class="inst-focus"><span class="focus-tag">Yttre & inre oblique</span><span class="focus-tag">Gluteus medius</span><span class="focus-tag">Quadratus lumborum</span></div>
           <div class="inst-warning">⚠ Höften ska varken sjunka ned eller peka upp — exakt rät linje är målet. Kvalitet över tid.</div>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 60 60" width="60" height="60">
+                <circle class="t-ring-bg" cx="30" cy="30" r="26"/>
+                <circle class="t-ring-prog" cx="30" cy="30" r="26" stroke-dasharray="163.4" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">30s</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 30, 'Byt sida!')">▶ Starta 30 sek/sida</button>
+          </div>
         </div></div>
       </div>
 
@@ -791,6 +880,14 @@
 
 </div>
 
+<!-- Alarm overlay -->
+<div class="alarm-overlay" id="alarmOverlay">
+  <div class="alarm-icon">⏰</div>
+  <div class="alarm-title" id="alarmTitle">TID UTE!</div>
+  <div class="alarm-sub" id="alarmSub">Byt sida eller vila</div>
+  <button class="alarm-dismiss" onclick="dismissAlarm()">OK – Stäng</button>
+</div>
+
 <script>
   function showDay(id, tab) {
     document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
@@ -801,10 +898,98 @@
 
   function toggleEx(card) {
     const isOpen = card.classList.contains('open');
-    // Close all in same panel
     card.closest('.exercises').querySelectorAll('.ex-card').forEach(c => c.classList.remove('open'));
     if (!isOpen) card.classList.add('open');
   }
+
+  // ---- TIMER ----
+  let activeTimers = {};
+
+  function fmt(s) {
+    const m = Math.floor(s / 60), sec = s % 60;
+    return m > 0 ? `${m}:${String(sec).padStart(2,'0')}` : `${sec}s`;
+  }
+
+  function startTimer(e, btn, duration, label) {
+    e.stopPropagation();
+    const wrap = btn.closest('.timer-wrap');
+    const numEl = wrap.querySelector('.timer-num');
+    const ring  = wrap.querySelector('.t-ring-prog');
+    const circ  = 163.4;
+    const key   = btn.dataset.key || (btn.dataset.key = Math.random().toString(36).slice(2));
+
+    // Pause if running
+    if (activeTimers[key]) {
+      clearInterval(activeTimers[key].iv);
+      delete activeTimers[key];
+      btn.textContent = '▶ Fortsätt';
+      btn.classList.remove('running');
+      return;
+    }
+
+    btn.classList.add('running');
+    btn.textContent = '⏸ Paus';
+
+    let remaining = activeTimers[key + '_rem'] ?? duration;
+
+    const iv = setInterval(() => {
+      remaining--;
+      activeTimers[key + '_rem'] = remaining;
+      numEl.textContent = fmt(remaining);
+      ring.style.strokeDashoffset = circ * (1 - remaining / duration);
+
+      if (remaining <= 0) {
+        clearInterval(iv);
+        delete activeTimers[key];
+        delete activeTimers[key + '_rem'];
+        btn.textContent = '✓ Klar!';
+        btn.classList.remove('running');
+        btn.classList.add('done');
+        numEl.textContent = fmt(duration);
+        ring.style.strokeDashoffset = 0;
+        triggerAlarm(label || 'Tid ute!');
+      }
+    }, 1000);
+
+    activeTimers[key] = { iv };
+  }
+
+  // ---- ALARM ----
+  let alarmSound = null;
+
+  function triggerAlarm(label) {
+    document.getElementById('alarmTitle').textContent = 'TID UTE!';
+    document.getElementById('alarmSub').textContent = label;
+    document.getElementById('alarmOverlay').classList.add('show');
+
+    // Web Audio beep
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      function beep(freq, start, dur) {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.connect(g); g.connect(ctx.destination);
+        o.frequency.value = freq;
+        o.type = 'sine';
+        g.gain.setValueAtTime(0.4, ctx.currentTime + start);
+        g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + start + dur);
+        o.start(ctx.currentTime + start);
+        o.stop(ctx.currentTime + start + dur + 0.05);
+      }
+      beep(880, 0,    0.15);
+      beep(880, 0.2,  0.15);
+      beep(1100, 0.4, 0.3);
+    } catch(e) {}
+  }
+
+  function dismissAlarm() {
+    document.getElementById('alarmOverlay').classList.remove('show');
+  }
+
+  // Dismiss on background click
+  document.getElementById('alarmOverlay').addEventListener('click', function(e) {
+    if (e.target === this) dismissAlarm();
+  });
 </script>
 </body>
 </html>

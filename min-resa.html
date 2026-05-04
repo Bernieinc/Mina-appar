@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Min Resa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1c1c1c;
+  --border: #242424;
+  --text: #f0f0f0;
+  --muted: #555;
+  --gold: #f9ca24;
+  --green: #26de81;
+  --pink: #fd79a8;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; padding-bottom:80px; }
+
+/* HEADER */
+header {
+  text-align:center;
+  padding:44px 20px 28px;
+  background:linear-gradient(180deg,#111 0%,var(--bg) 100%);
+  border-bottom:1px solid var(--border);
+}
+header h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(2.2rem,8vw,3.6rem);
+  letter-spacing:.08em;
+  background:linear-gradient(135deg,var(--gold),var(--green),var(--pink));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1;
+}
+header p { color:var(--muted); font-size:12px; margin-top:8px; letter-spacing:.1em; text-transform:uppercase; }
+
+/* QUOTE BOX */
+.quote-box {
+  max-width:680px; margin:28px auto 0; padding:0 16px;
+}
+.quote {
+  background:var(--surface);
+  border-left:3px solid var(--gold);
+  border-radius:0 10px 10px 0;
+  padding:16px 20px;
+  font-size:15px; color:#bbb; font-weight:300; font-style:italic;
+  line-height:1.7;
+  transition:opacity .4s;
+}
+.quote strong { color:var(--gold); font-style:normal; font-weight:600; }
+.quote-refresh {
+  background:none; border:none; color:var(--muted);
+  font-size:11px; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; margin-top:10px; padding:4px 0;
+  display:flex; align-items:center; gap:6px;
+  transition:color .2s;
+}
+.quote-refresh:hover { color:var(--gold); }
+
+/* SECTIONS */
+.sections { max-width:680px; margin:32px auto 0; padding:0 16px; display:flex; flex-direction:column; gap:20px; }
+
+.section {
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px; overflow:hidden;
+}
+.section-header {
+  display:flex; align-items:center; gap:14px;
+  padding:18px 20px 16px;
+  border-bottom:1px solid var(--border);
+}
+.section-icon { font-size:26px; line-height:1; }
+.section-title { font-family:'Bebas Neue',sans-serif; font-size:1.3rem; letter-spacing:.07em; }
+.section-score {
+  margin-left:auto;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:1.6rem; letter-spacing:.05em;
+}
+
+.section-body { padding:18px 20px; }
+
+/* MOOD PICKER */
+.mood-label { font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:10px; }
+.mood-row { display:flex; gap:8px; flex-wrap:wrap; }
+.mood-btn {
+  background:var(--surface2); border:2px solid var(--border);
+  border-radius:10px; padding:8px 14px;
+  font-size:13px; cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; gap:6px;
+  color:var(--muted);
+}
+.mood-btn:hover { border-color:#444; color:var(--text); }
+.mood-btn.selected { color:#000; font-weight:600; }
+
+/* WIN INPUT */
+.win-section { margin-top:16px; }
+.win-label { font-size:11px; color:var(--muted); letter-spacing:.08em; text-transform:uppercase; margin-bottom:8px; }
+.win-row { display:flex; gap:8px; }
+.win-input {
+  flex:1; background:var(--surface2); border:1px solid var(--border);
+  color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px;
+  padding:9px 12px; border-radius:8px; outline:none;
+  transition:border-color .2s;
+}
+.win-input:focus { border-color:#444; }
+.win-input::placeholder { color:#333; }
+.win-add {
+  background:none; border:1px solid var(--border);
+  color:var(--muted); font-size:18px; width:36px; height:36px;
+  border-radius:8px; cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; justify-content:center;
+}
+.win-add:hover { border-color:#666; color:var(--text); }
+
+.wins-list { margin-top:10px; display:flex; flex-direction:column; gap:6px; }
+.win-item {
+  display:flex; align-items:center; gap:10px;
+  background:var(--surface2); border-radius:8px; padding:8px 12px;
+  font-size:13px; color:#ccc;
+}
+.win-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+.win-del { margin-left:auto; background:none; border:none; color:#333; cursor:pointer; font-size:14px; transition:color .2s; }
+.win-del:hover { color:#e74c3c; }
+
+/* STREAK */
+.streak-row { display:flex; gap:8px; margin-top:16px; flex-wrap:wrap; }
+.streak-day {
+  width:32px; height:32px; border-radius:6px;
+  border:1px solid var(--border);
+  background:var(--surface2);
+  display:flex; align-items:center; justify-content:center;
+  font-size:10px; color:var(--muted); cursor:pointer;
+  transition:all .2s;
+}
+.streak-day.done { border-color:transparent; }
+.streak-day:hover { border-color:#444; }
+
+/* TIP BOX */
+.tip-box {
+  margin-top:16px;
+  background:rgba(255,255,255,.02);
+  border:1px solid var(--border);
+  border-radius:10px; padding:12px 14px;
+  font-size:12px; color:#666; line-height:1.7; font-weight:300;
+}
+.tip-box strong { font-weight:600; }
+
+/* SAVE BAR */
+.save-bar {
+  position:fixed; bottom:0; left:0; right:0;
+  background:#111; border-top:1px solid var(--border);
+  padding:12px 16px;
+  display:flex; align-items:center; justify-content:center; gap:12px;
+}
+.save-btn {
+  background:linear-gradient(135deg,var(--gold),#e67e22);
+  color:#000; border:none; border-radius:10px;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:15px; letter-spacing:.1em;
+  padding:12px 40px; cursor:pointer; transition:opacity .2s;
+}
+.save-btn:hover { opacity:.85; }
+.save-note { font-size:12px; color:var(--muted); }
+
+/* Saved toast */
+.toast {
+  position:fixed; top:20px; left:50%; transform:translateX(-50%) translateY(-80px);
+  background:#26de81; color:#000;
+  font-family:'Bebas Neue',sans-serif; font-size:14px; letter-spacing:.1em;
+  padding:10px 28px; border-radius:30px;
+  transition:transform .3s ease;
+  z-index:999; pointer-events:none;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>MIN RESA</h1>
+  <p>Pengar · Vikt · Intimitet</p>
+</header>
+
+<div class="quote-box">
+  <div class="quote" id="quoteText"></div>
+  <button class="quote-refresh" onclick="newQuote()">↻ Ny citat</button>
+</div>
+
+<div class="sections">
+
+  <!-- PENGAR -->
+  <div class="section" id="sec-money">
+    <div class="section-header">
+      <span class="section-icon">💰</span>
+      <span class="section-title" style="color:var(--gold)">Pengar</span>
+      <span class="section-score" id="score-money" style="color:var(--gold)">–</span>
+    </div>
+    <div class="section-body">
+      <div class="mood-label">Hur känns ekonomin idag?</div>
+      <div class="mood-row" id="mood-money"></div>
+      <div class="win-section">
+        <div class="win-label">✅ Mina ekonomiska vinster</div>
+        <div class="win-row">
+          <input class="win-input" id="win-money-input" placeholder="t.ex. Loggade utgifter, la undan 200 kr..." onkeydown="if(event.key==='Enter')addWin('money')">
+          <button class="win-add" onclick="addWin('money')">+</button>
+        </div>
+        <div class="wins-list" id="wins-money"></div>
+      </div>
+      <div class="tip-box">
+        💡 <strong>Ett steg idag:</strong> Öppna banken och se exakt vad du spenderat den senaste veckan. Känslan av kontroll börjar med att veta.
+      </div>
+    </div>
+  </div>
+
+  <!-- VIKT -->
+  <div class="section" id="sec-weight">
+    <div class="section-header">
+      <span class="section-icon">💪</span>
+      <span class="section-title" style="color:var(--green)">Vikt & Hälsa</span>
+      <span class="section-score" id="score-weight" style="color:var(--green)">–</span>
+    </div>
+    <div class="section-body">
+      <div class="mood-label">Hur känns kroppen idag?</div>
+      <div class="mood-row" id="mood-weight"></div>
+      <div class="win-section">
+        <div class="win-label">✅ Mina hälsovinster</div>
+        <div class="win-row">
+          <input class="win-input" id="win-weight-input" placeholder="t.ex. Tränade Pass A, åt bra lunch..." onkeydown="if(event.key==='Enter')addWin('weight')">
+          <button class="win-add" onclick="addWin('weight')">+</button>
+        </div>
+        <div class="wins-list" id="wins-weight"></div>
+      </div>
+      <div class="win-section">
+        <div class="win-label">🔥 Träningsdagar denna vecka</div>
+        <div class="streak-row" id="streak-weight"></div>
+      </div>
+      <div class="tip-box">
+        💡 <strong>Kom ihåg:</strong> Du har ett hemmagym och ett träningsschema. Tre pass i veckan förändrar kroppen på 8–12 veckor. Du är redan igång.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEX / INTIMITET -->
+  <div class="section" id="sec-intimacy">
+    <div class="section-header">
+      <span class="section-icon">❤️</span>
+      <span class="section-title" style="color:var(--pink)">Intimitet</span>
+      <span class="section-score" id="score-intimacy" style="color:var(--pink)">–</span>
+    </div>
+    <div class="section-body">
+      <div class="mood-label">Hur mår du i relationen / med dig själv idag?</div>
+      <div class="mood-row" id="mood-intimacy"></div>
+      <div class="win-section">
+        <div class="win-label">✅ Positiva stunder</div>
+        <div class="win-row">
+          <input class="win-input" id="win-intimacy-input" placeholder="t.ex. Bra samtal, kände mig nära, tog hand om mig..." onkeydown="if(event.key==='Enter')addWin('intimacy')">
+          <button class="win-add" onclick="addWin('intimacy')">+</button>
+        </div>
+        <div class="wins-list" id="wins-intimacy"></div>
+      </div>
+      <div class="tip-box">
+        💡 <strong>Kom ihåg:</strong> Intimitet följer ofta självkänsla och energi. När pengar och kropp känns bättre brukar det här följa med. Du är på rätt spår.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="save-bar">
+  <span class="save-note">Sparas lokalt på din enhet</span>
+  <button class="save-btn" onclick="saveAll()">SPARA DAGEN</button>
+</div>
+
+<div class="toast" id="toast">✓ Sparat!</div>
+
+<script>
+const STORE = 'minresa_v1';
+const MOODS = [
+  { val:1, emoji:'😔', label:'Tungt' },
+  { val:2, emoji:'😐', label:'Ok' },
+  { val:3, emoji:'🙂', label:'Bra' },
+  { val:4, emoji:'😄', label:'Starkt' },
+];
+const COLORS = { money:'#f9ca24', weight:'#26de81', intimacy:'#fd79a8' };
+const DAYS = ['Mån','Tis','Ons','Tor','Fre','Lör','Sön'];
+
+const QUOTES = [
+  "Du behöver inte fixa allt på en gång. <strong>Ett litet steg idag</strong> är oändligt mycket bättre än ett perfekt steg imorgon.",
+  "De tre sakerna hänger ihop – men de förstärker också varandra positivt. <strong>Förbättras en, lyfts de andra.</strong>",
+  "Att känna sig nere är inte ett tecken på svaghet. Det är ett tecken på att du <strong>bryr dig om ditt liv.</strong>",
+  "Konsistens slår alltid intensitet. <strong>Lite varje dag</strong> förändrar allt på sikt.",
+  "Du har redan tagit det svåraste steget: <strong>du är medveten</strong> om vad du vill förändra.",
+  "Självkänsla byggs inte av stora prestationer. Den byggs av <strong>löften du håller till dig själv</strong>, ett i taget.",
+  "Det är okej att ha dåliga dagar. <strong>Ge inte upp din vecka för att du haft en dålig dag.</strong>",
+  "Pengar, hälsa, intimitet – alla tre svarar på samma sak: <strong>uppmärksamhet och konsekvens.</strong>",
+  "Du förtjänar att må bra. Inte när allt är perfekt. <strong>Nu. Som du är.</strong>",
+  "Varje gång du loggar, tränar eller sparar – <strong>du bevisar för dig själv att du kan.</strong>",
+];
+
+let state = {
+  moods: { money:0, weight:0, intimacy:0 },
+  wins: { money:[], weight:[], intimacy:[] },
+  streak: [false,false,false,false,false,false,false],
+};
+
+function loadState() {
+  const saved = localStorage.getItem(STORE);
+  if (saved) {
+    try { state = { ...state, ...JSON.parse(saved) }; } catch(e) {}
+  }
+}
+
+function saveAll() {
+  localStorage.setItem(STORE, JSON.stringify(state));
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── MOODS ─────────────────────────────────────────────
+function renderMoods(key) {
+  const el = document.getElementById('mood-'+key);
+  el.innerHTML = MOODS.map(m => `
+    <button class="mood-btn ${state.moods[key]===m.val?'selected':''}"
+      style="${state.moods[key]===m.val?'background:'+COLORS[key]+';border-color:'+COLORS[key]+';':''}"
+      onclick="setMood('${key}',${m.val})">
+      ${m.emoji} ${m.label}
+    </button>
+  `).join('');
+  updateScore(key);
+}
+
+function setMood(key, val) {
+  state.moods[key] = val;
+  renderMoods(key);
+}
+
+function updateScore(key) {
+  const v = state.moods[key];
+  const el = document.getElementById('score-'+key);
+  el.textContent = v ? MOODS[v-1].emoji : '–';
+}
+
+// ── WINS ──────────────────────────────────────────────
+function renderWins(key) {
+  const el = document.getElementById('wins-'+key);
+  if (!state.wins[key].length) { el.innerHTML = ''; return; }
+  el.innerHTML = state.wins[key].map((w,i) => `
+    <div class="win-item">
+      <div class="win-dot" style="background:${COLORS[key]}"></div>
+      ${escHtml(w)}
+      <button class="win-del" onclick="deleteWin('${key}',${i})">×</button>
+    </div>
+  `).join('');
+}
+
+function addWin(key) {
+  const inp = document.getElementById('win-'+key+'-input');
+  const val = inp.value.trim();
+  if (!val) return;
+  state.wins[key].unshift(val);
+  inp.value = '';
+  renderWins(key);
+}
+
+function deleteWin(key, idx) {
+  state.wins[key].splice(idx,1);
+  renderWins(key);
+}
+
+// ── STREAK ────────────────────────────────────────────
+function renderStreak() {
+  const el = document.getElementById('streak-weight');
+  el.innerHTML = DAYS.map((d,i) => `
+    <div class="streak-day ${state.streak[i]?'done':''}"
+      style="${state.streak[i]?'background:'+COLORS.weight+';color:#000;font-weight:700;':''}"
+      onclick="toggleStreak(${i})" title="${d}">
+      ${d}
+    </div>
+  `).join('');
+}
+
+function toggleStreak(i) {
+  state.streak[i] = !state.streak[i];
+  renderStreak();
+}
+
+// ── QUOTES ────────────────────────────────────────────
+let lastQuote = -1;
+function newQuote() {
+  let idx;
+  do { idx = Math.floor(Math.random()*QUOTES.length); } while(idx===lastQuote);
+  lastQuote = idx;
+  const el = document.getElementById('quoteText');
+  el.style.opacity = 0;
+  setTimeout(() => { el.innerHTML = '"' + QUOTES[idx] + '"'; el.style.opacity = 1; }, 250);
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── BOOT ──────────────────────────────────────────────
+loadState();
+['money','weight','intimacy'].forEach(k => { renderMoods(k); renderWins(k); });
+renderStreak();
+newQuote();
+</script>
+</body>
+</html>

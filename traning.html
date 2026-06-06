@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6-Pack & Biceps Program</title>
+<title>Överkropp Program</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -160,6 +160,7 @@
   }
   .tag-abs { background: rgba(232,255,71,0.12); color: var(--accent); }
   .tag-bi  { background: rgba(255,71,87,0.12);  color: var(--accent2); }
+  .tag-tri { background: rgba(71,180,255,0.14); color: #47b4ff; }
   .tag-comp{ background: rgba(255,255,255,0.06); color: var(--muted); }
 
   /* Instruction panel */
@@ -303,12 +304,12 @@
 
   <header>
     <div class="eyebrow">Träningsprogram · 4 veckor</div>
-    <h1>6-PACK &<br><span>BICEPS</span></h1>
-    <p class="subtitle">3 pass per vecka · Progressiv överbelastning · Fokus på mage & armar</p>
+    <h1>ÖVER<br><span>KROPP</span></h1>
+    <p class="subtitle">4 pass per vecka · Progressiv överbelastning · Fokus på hela överkroppen</p>
   </header>
 
   <div class="stats">
-    <div class="stat"><div class="stat-val">3</div><div class="stat-label">Pass/vecka</div></div>
+    <div class="stat"><div class="stat-val">4</div><div class="stat-label">Pass/vecka</div></div>
     <div class="stat"><div class="stat-val">45–60</div><div class="stat-label">Min/pass</div></div>
     <div class="stat"><div class="stat-val">4</div><div class="stat-label">Veckor</div></div>
     <div class="stat"><div class="stat-val">6–12</div><div class="stat-label">Reps/set</div></div>
@@ -316,8 +317,9 @@
 
   <div class="tabs">
     <div class="tab active" onclick="showDay('dag1',this)">Dag 1 · Mån</div>
-    <div class="tab" onclick="showDay('dag2',this)">Dag 2 · Ons</div>
-    <div class="tab" onclick="showDay('dag3',this)">Dag 3 · Fre</div>
+    <div class="tab" onclick="showDay('dag2',this)">Dag 2 · Tis</div>
+    <div class="tab" onclick="showDay('dag3',this)">Dag 3 · Tor</div>
+    <div class="tab" onclick="showDay('dag4',this)">Dag 4 · Lör</div>
     <div class="tab" onclick="showDay('vila',this)">Vila</div>
   </div>
 
@@ -325,61 +327,10 @@
   <div class="day-panel active" id="dag1">
     <div class="day-header">
       <span class="day-badge">PASS 1</span>
-      <span class="day-title">Bröst + Biceps + Mage</span>
+      <span class="day-title">Bröst + Triceps + Mage</span>
       <span class="day-focus">Styrka</span>
     </div>
     <div class="exercises">
-
-      <div class="ex-card" onclick="toggleEx(this)">
-        <div class="ex-main">
-          <div>
-            <div class="ex-name">Hantelcurl (stående)</div>
-            <div class="ex-tip">Håll armbågen stilla – rör bara underarmen</div>
-            <span class="tag tag-bi">Biceps</span>
-          </div>
-          <div class="ex-right">
-            <div class="ex-sets">4</div>
-            <div class="ex-reps">8–10 reps</div>
-            <div class="ex-chevron">▼</div>
-          </div>
-        </div>
-        <div class="ex-instructions"><div class="ex-instructions-inner">
-          <ol class="inst-steps">
-            <li><span class="step-num">1</span>Stå med fötterna höftbrett isär, en hantel i varje hand med handflatorna framåt (supinerat grepp).</li>
-            <li><span class="step-num">2</span>Pressa armbågarna mot sidan av kroppen — de ska inte röra sig under hela övningen.</li>
-            <li><span class="step-num">3</span>Curl upp ena hanteln mot axeln med en kontrollerad rörelse. Knip ihop biceps hårt i toppläget.</li>
-            <li><span class="step-num">4</span>Sänk långsamt (2–3 sek) tillbaka till startposition. Sträck ut armen helt för maximalt rörelseutslag.</li>
-            <li><span class="step-num">5</span>Alternera armar eller gör båda samtidigt.</li>
-          </ol>
-          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span><span class="focus-tag">Supinator</span></div>
-          <div class="inst-warning">⚠ Undvik att svinga med överkroppen för att hjälpa upp vikten — det tar bort spänningen från biceps.</div>
-        </div></div>
-      </div>
-
-      <div class="ex-card" onclick="toggleEx(this)">
-        <div class="ex-main">
-          <div>
-            <div class="ex-name">Hammarcurl</div>
-            <div class="ex-tip">Aktiverar brachialis – ger bredare arm</div>
-            <span class="tag tag-bi">Biceps</span>
-          </div>
-          <div class="ex-right">
-            <div class="ex-sets">3</div>
-            <div class="ex-reps">10–12 reps</div>
-            <div class="ex-chevron">▼</div>
-          </div>
-        </div>
-        <div class="ex-instructions"><div class="ex-instructions-inner">
-          <ol class="inst-steps">
-            <li><span class="step-num">1</span>Stå upprätt med en hantel i varje hand, handflatorna mot kroppen (neutralt grepp — som att hålla en hammare).</li>
-            <li><span class="step-num">2</span>Håll armbågarna nära kroppen och curl upp hantlarna mot axlarna utan att vrida handleden.</li>
-            <li><span class="step-num">3</span>Håll kvar ett ögonblick i toppläget och sänk kontrollerat.</li>
-            <li><span class="step-num">4</span>Kan göras alternerande eller simultant.</li>
-          </ol>
-          <div class="inst-focus"><span class="focus-tag">Brachialis</span><span class="focus-tag">Brachioradialis</span><span class="focus-tag">Biceps brachii</span></div>
-          <div class="inst-warning">⚠ Det neutrala greppet belastar brachialis mer än vanlig curl — använd ofta lite tyngre vikt än vid hantelcurl.</div>
-        </div></div>
-      </div>
 
       <div class="ex-card" onclick="toggleEx(this)">
         <div class="ex-main">
@@ -404,6 +355,81 @@
           </ol>
           <div class="inst-focus"><span class="focus-tag">Pectoralis major</span><span class="focus-tag">Triceps</span><span class="focus-tag">Främre deltoid</span></div>
           <div class="inst-warning">⚠ Använd alltid säkerhetsstativ eller en spotter vid tunga vikter. Stången ska aldrig bounca mot bröstkorgen.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Lutande hantelpress</div>
+            <div class="ex-tip">Träffar övre bröstet – luta bänken 30–45°</div>
+            <span class="tag tag-comp">Bröst</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">8–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ställ in bänken på 30–45° lutning. Sitt med en hantel i varje hand vilande på låren.</li>
+            <li><span class="step-num">2</span>Luta dig bakåt och kicka upp hantlarna till axelhöjd, handflatorna framåt. Dra ihop skulderbladen.</li>
+            <li><span class="step-num">3</span>Pressa hantlarna uppåt och lätt inåt tills de nästan möts i toppläget — sträck inte ut armbågarna helt.</li>
+            <li><span class="step-num">4</span>Sänk kontrollerat (2–3 sek) tills du känner en stark stretch i övre bröstet.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Övre pectoralis major</span><span class="focus-tag">Främre deltoid</span><span class="focus-tag">Triceps</span></div>
+          <div class="inst-warning">⚠ För hög lutning (&gt;45°) flyttar belastningen till axlarna istället för bröstet.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Dips (bröst/triceps)</div>
+            <div class="ex-tip">Luta fram för bröst, upprätt för triceps</div>
+            <span class="tag tag-tri">Triceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">8–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Greppa två parallella barrer (eller dipställning) och pressa upp dig till raka armar.</li>
+            <li><span class="step-num">2</span>För triceps-fokus: håll kroppen så upprätt som möjligt och armbågarna nära kroppen.</li>
+            <li><span class="step-num">3</span>Sänk dig kontrollerat tills armbågarna är ca 90°. Känn sträck men gå inte djupare än axelkomforten tillåter.</li>
+            <li><span class="step-num">4</span>Pressa upp till raka (men ej överextenderade) armar. Andas ut på vägen upp.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Triceps brachii</span><span class="focus-tag">Nedre pectoralis</span><span class="focus-tag">Främre deltoid</span></div>
+          <div class="inst-warning">⚠ Gå inte för djupt — överdriven sänkning belastar axelleden hårt. Lägg till vikt i bälte när kroppsvikt blir lätt.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Triceps Pushdown (kabel)</div>
+            <div class="ex-tip">Håll armbågarna fastlåsta mot sidorna</div>
+            <span class="tag tag-tri">Triceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">10–15 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Fäst ett rep eller en rak stång högt i kabelmaskinen. Stå upprätt med lätt framåtlutning.</li>
+            <li><span class="step-num">2</span>Greppa handtaget och pressa armbågarna mot sidorna — de ska vara fixerade under hela rörelsen.</li>
+            <li><span class="step-num">3</span>Pressa nedåt tills armarna är helt raka. Vid rep: dra isär ändarna i bottenläget för extra kontraktion.</li>
+            <li><span class="step-num">4</span>Släpp långsamt tillbaka tills underarmen är strax över parallell. Håll spänningen.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Triceps brachii (alla tre huvuden)</span></div>
+          <div class="inst-warning">⚠ Låt inte armbågarna flyttas framåt eller utåt — då tar axlar och rygg över arbetet.</div>
         </div></div>
       </div>
 
@@ -669,7 +695,7 @@
   <div class="day-panel" id="dag3">
     <div class="day-header">
       <span class="day-badge">PASS 3</span>
-      <span class="day-title">Axlar + Biceps + Mage</span>
+      <span class="day-title">Axlar + Mage</span>
       <span class="day-focus">Intensitet</span>
     </div>
     <div class="exercises">
@@ -702,50 +728,50 @@
       <div class="ex-card" onclick="toggleEx(this)">
         <div class="ex-main">
           <div>
-            <div class="ex-name">Incline Curl (lutande bänk)</div>
-            <div class="ex-tip">Lång sträckning = maximal bicepsaktivering</div>
-            <span class="tag tag-bi">Biceps</span>
+            <div class="ex-name">Sidolyft (hantel)</div>
+            <div class="ex-tip">Led med armbågarna – inte händerna</div>
+            <span class="tag tag-comp">Axlar</span>
           </div>
           <div class="ex-right">
             <div class="ex-sets">4</div>
-            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-reps">12–15 reps</div>
             <div class="ex-chevron">▼</div>
           </div>
         </div>
         <div class="ex-instructions"><div class="ex-instructions-inner">
           <ol class="inst-steps">
-            <li><span class="step-num">1</span>Ställ in bänken på 45–60°. Luta dig tillbaka med en hantel i varje hand, armarna hängande rakt ned längs bänken.</li>
-            <li><span class="step-num">2</span>Den bakåtlutade positionen ger en lång stretch i biceps — det är det som gör övningen unik.</li>
-            <li><span class="step-num">3</span>Curl upp hantlarna mot axlarna. Håll armbågarna stilla — de ska inte röra sig framåt.</li>
-            <li><span class="step-num">4</span>Sänk extra långsamt (3–4 sek) för att maximera den excentrska fasen.</li>
+            <li><span class="step-num">1</span>Stå upprätt med en hantel i varje hand längs sidorna, lätt böjda armbågar.</li>
+            <li><span class="step-num">2</span>Lyft hantlarna utåt åt sidorna tills armarna är parallella med golvet. Led rörelsen med armbågarna, inte händerna.</li>
+            <li><span class="step-num">3</span>Tänk att du häller upp vatten ur en kanna — lillfingret aningen högre än tummen i toppläget.</li>
+            <li><span class="step-num">4</span>Sänk långsamt (2–3 sek). Stoppa inte helt i botten — håll konstant spänning på deltoiderna.</li>
           </ol>
-          <div class="inst-focus"><span class="focus-tag">Biceps brachii (långt huvud)</span><span class="focus-tag">Brachialis</span></div>
-          <div class="inst-warning">⚠ Använd lättare vikt än vanlig curl — det längre rörelseutslaget är hårdare för biceps. Prioritera form framför tyngd.</div>
+          <div class="inst-focus"><span class="focus-tag">Mellersta deltoid</span><span class="focus-tag">Supraspinatus</span></div>
+          <div class="inst-warning">⚠ Svinga inte upp vikten med rygg/ben. Går det inte utan svikt — sänk vikten. Detta är en isolationsövning.</div>
         </div></div>
       </div>
 
       <div class="ex-card" onclick="toggleEx(this)">
         <div class="ex-main">
           <div>
-            <div class="ex-name">21:or (curl-variant)</div>
-            <div class="ex-tip">7 nere, 7 uppe, 7 fulla – brinner garanterat</div>
-            <span class="tag tag-bi">Biceps</span>
+            <div class="ex-name">Face Pull (kabel)</div>
+            <div class="ex-tip">Bakre axel + hållning – dra mot ansiktet</div>
+            <span class="tag tag-comp">Axlar</span>
           </div>
           <div class="ex-right">
             <div class="ex-sets">3</div>
-            <div class="ex-reps">21 reps</div>
+            <div class="ex-reps">12–15 reps</div>
             <div class="ex-chevron">▼</div>
           </div>
         </div>
         <div class="ex-instructions"><div class="ex-instructions-inner">
           <ol class="inst-steps">
-            <li><span class="step-num">1</span><strong style="color:#e8ff47">7 nedre halvan:</strong> Curl från utsträckt arm upp till 90° (halvvägs). Armbågen stannar vid sidan. Upprepa 7 gånger.</li>
-            <li><span class="step-num">2</span><strong style="color:#e8ff47">7 övre halvan:</strong> Curl från 90° upp till axeln (övre halvan). Upprepa 7 gånger.</li>
-            <li><span class="step-num">3</span><strong style="color:#e8ff47">7 fulla reps:</strong> Hela rörelseutslaget nerifrån upp. Upprepa 7 gånger.</li>
-            <li><span class="step-num">4</span>Pausa inte mellan de tre faserna — kör dem direkt efter varandra.</li>
+            <li><span class="step-num">1</span>Fäst ett rep i kabelmaskinen i ungefär ansiktshöjd. Greppa med tummarna mot dig.</li>
+            <li><span class="step-num">2</span>Ta ett par steg bak så vikten lyfter, armarna utsträckta framåt.</li>
+            <li><span class="step-num">3</span>Dra repet mot ansiktet och dra samtidigt isär ändarna — armbågarna ut åt sidorna, högt.</li>
+            <li><span class="step-num">4</span>Knip ihop skulderbladen i ändläget. Släpp långsamt tillbaka kontrollerat.</li>
           </ol>
-          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span><span class="focus-tag">Uthållighet</span></div>
-          <div class="inst-warning">⚠ Välj lättare vikt än vanlig curl — du gör 21 reps utan paus. Tekniken ska hålla hela vägen igenom.</div>
+          <div class="inst-focus"><span class="focus-tag">Bakre deltoid</span><span class="focus-tag">Rhomboideus</span><span class="focus-tag">Externa rotatorer</span></div>
+          <div class="inst-warning">⚠ Använd lätt vikt och hög repsfrekvens — detta är lika mycket en hållnings- och axelhälsoövning som styrka.</div>
         </div></div>
       </div>
 
@@ -837,12 +863,160 @@
     </div>
   </div>
 
+  <!-- DAG 4 -->
+  <div class="day-panel" id="dag4">
+    <div class="day-header">
+      <span class="day-badge">PASS 4</span>
+      <span class="day-title">Armar + Mage</span>
+      <span class="day-focus">Pump</span>
+    </div>
+    <div class="exercises">
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Hantelcurl (stående)</div>
+            <div class="ex-tip">Håll armbågen stilla – rör bara underarmen</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">8–10 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå med fötterna höftbrett isär, en hantel i varje hand med handflatorna framåt (supinerat grepp).</li>
+            <li><span class="step-num">2</span>Pressa armbågarna mot sidan av kroppen — de ska inte röra sig under hela övningen.</li>
+            <li><span class="step-num">3</span>Curl upp ena hanteln mot axeln med en kontrollerad rörelse. Knip ihop biceps hårt i toppläget.</li>
+            <li><span class="step-num">4</span>Sänk långsamt (2–3 sek) tillbaka till startposition. Sträck ut armen helt för maximalt rörelseutslag.</li>
+            <li><span class="step-num">5</span>Alternera armar eller gör båda samtidigt.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Biceps brachii</span><span class="focus-tag">Brachialis</span><span class="focus-tag">Supinator</span></div>
+          <div class="inst-warning">⚠ Undvik att svinga med överkroppen för att hjälpa upp vikten — det tar bort spänningen från biceps.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Skullcrusher (EZ-bar)</div>
+            <div class="ex-tip">Sänk mot pannan – bara underarmen rör sig</div>
+            <span class="tag tag-tri">Triceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">4</div>
+            <div class="ex-reps">8–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Ligg på en bänk med en EZ-stång i raka armar rakt över bröstet, lätt lutade bakåt mot huvudet.</li>
+            <li><span class="step-num">2</span>Håll överarmarna stilla och böj endast i armbågarna — sänk stången mot pannan eller strax bakom huvudet.</li>
+            <li><span class="step-num">3</span>Känn en stark stretch i triceps i bottenläget. Överarmarna ska inte vandra.</li>
+            <li><span class="step-num">4</span>Pressa tillbaka till start genom att sträcka armbågarna. Knip triceps i toppläget.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Triceps brachii (långt huvud)</span></div>
+          <div class="inst-warning">⚠ Tappa aldrig kontrollen — namnet kommer av risken om stången faller. Börja lätt och prioritera teknik.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Hammarcurl</div>
+            <div class="ex-tip">Aktiverar brachialis – ger bredare arm</div>
+            <span class="tag tag-bi">Biceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stå upprätt med en hantel i varje hand, handflatorna mot kroppen (neutralt grepp — som att hålla en hammare).</li>
+            <li><span class="step-num">2</span>Håll armbågarna nära kroppen och curl upp hantlarna mot axlarna utan att vrida handleden.</li>
+            <li><span class="step-num">3</span>Håll kvar ett ögonblick i toppläget och sänk kontrollerat.</li>
+            <li><span class="step-num">4</span>Kan göras alternerande eller simultant.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Brachialis</span><span class="focus-tag">Brachioradialis</span><span class="focus-tag">Biceps brachii</span></div>
+          <div class="inst-warning">⚠ Det neutrala greppet belastar brachialis mer än vanlig curl — använd ofta lite tyngre vikt än vid hantelcurl.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Overhead Triceps Extension</div>
+            <div class="ex-tip">Sträck rakt upp – armbågarna pekar framåt</div>
+            <span class="tag tag-tri">Triceps</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">10–12 reps</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Håll en hantel med båda händerna (eller en kabel bakom dig) och pressa den rakt upp över huvudet.</li>
+            <li><span class="step-num">2</span>Håll överarmarna nära huvudet och armbågarna pekande framåt under hela rörelsen.</li>
+            <li><span class="step-num">3</span>Sänk vikten bakom huvudet genom att böja armbågarna — känn stretchen i det långa triceps-huvudet.</li>
+            <li><span class="step-num">4</span>Pressa tillbaka upp till raka armar utan att armbågarna flaxar utåt.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Triceps brachii (långt huvud)</span></div>
+          <div class="inst-warning">⚠ Den överhuvudsposition ger maximal stretch men kan belasta axeln — värm upp och undvik om du har axelbesvär.</div>
+        </div></div>
+      </div>
+
+      <div class="ex-card" onclick="toggleEx(this)">
+        <div class="ex-main">
+          <div>
+            <div class="ex-name">Planka</div>
+            <div class="ex-tip">Spänn rumpan och andas normalt</div>
+            <span class="tag tag-abs">Mage</span>
+          </div>
+          <div class="ex-right">
+            <div class="ex-sets">3</div>
+            <div class="ex-reps">30–60 sek</div>
+            <div class="ex-chevron">▼</div>
+          </div>
+        </div>
+        <div class="ex-instructions"><div class="ex-instructions-inner">
+          <ol class="inst-steps">
+            <li><span class="step-num">1</span>Stöd på underarmarna (armbågarna under axlarna) och tårna. Kroppen rak som en planka från huvud till häl.</li>
+            <li><span class="step-num">2</span>Spänn magen, gluteus och låren samtidigt. Knip navel mot ryggraden.</li>
+            <li><span class="step-num">3</span>Titta ned mot golvet — neutral nackposition. Andas kontrollerat under hela håll-perioden.</li>
+            <li><span class="step-num">4</span>Håll positionen utan att tappa formen. Bättre 20 sek med rätt form än 60 sek med sjunkande höfter.</li>
+          </ol>
+          <div class="inst-focus"><span class="focus-tag">Transversus abdominis</span><span class="focus-tag">Core stabilisatorer</span><span class="focus-tag">Gluteus</span></div>
+          <div class="inst-warning">⚠ Undvik att höften sjunker ned eller pekar upp som ett tält — båda tar bort effekten och belastar ryggen felaktigt.</div>
+          <div class="timer-wrap">
+            <div class="timer-ring">
+              <svg viewBox="0 0 60 60" width="60" height="60">
+                <circle class="t-ring-bg" cx="30" cy="30" r="26"/>
+                <circle class="t-ring-prog" cx="30" cy="30" r="26" stroke-dasharray="163.4" stroke-dashoffset="0"/>
+              </svg>
+              <div class="timer-num">60s</div>
+            </div>
+            <button class="timer-btn" onclick="startTimer(event, this, 60, 'Planka klar – vila!')">▶ Starta 60 sek</button>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- VILA -->
   <div class="day-panel" id="vila">
     <div class="day-header">
       <span class="day-badge rest">VILA</span>
       <span class="day-title">Återhämtning</span>
-      <span class="day-focus">Tis · Tor · Lör · Sön</span>
+      <span class="day-focus">Ons · Fre · Sön</span>
     </div>
     <div class="rest-card">
       <div class="rest-icon">💤</div>
@@ -858,7 +1032,7 @@
       <div class="tip-card">
         <div class="tip-icon">🥩</div>
         <div class="tip-title">Protein</div>
-        <div class="tip-text">1,6–2g per kg kroppsvikt/dag. 6-pack skapas i köket – kaloriunderskott krävs.</div>
+        <div class="tip-text">1,6–2g per kg kroppsvikt/dag. Muskler byggs av protein + tillräckligt med kalorier.</div>
       </div>
       <div class="tip-card">
         <div class="tip-icon">📈</div>

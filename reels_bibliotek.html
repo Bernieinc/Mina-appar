@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Videoarkiv</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg:      #0d0d0d;
+    --surface: #161616;
+    --card:    #1c1c1c;
+    --border:  #2a2a2a;
+    --accent:  #e8c547;
+    --text:    #e8e8e8;
+    --muted:   #666;
+    --mono:    'IBM Plex Mono', monospace;
+    --sans:    'Inter', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(13,13,13,0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .logo {
+    font-family: var(--mono); font-size: 13px;
+    letter-spacing: 0.12em; color: var(--accent);
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .logo span { color: var(--muted); }
+  #searchInput {
+    flex: 1; min-width: 160px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; color: var(--text);
+    font-family: var(--sans); font-size: 14px;
+    padding: 8px 14px; outline: none; transition: border-color 0.15s;
+  }
+  #searchInput:focus { border-color: var(--accent); }
+  #searchInput::placeholder { color: var(--muted); }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    padding: 8px 14px; border-radius: 5px; border: none;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .btn-primary { background: var(--accent); color: #0d0d0d; font-weight: 500; }
+  .btn-primary:hover { background: #f0d060; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-ghost:hover, .btn-ghost.active { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Stats ── */
+  #statsBar {
+    display: none; gap: 20px; padding: 9px 20px;
+    border-bottom: 1px solid var(--border); background: var(--surface); flex-wrap: wrap;
+  }
+  .stat { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .stat strong { color: var(--accent); }
+
+  /* ── Filters ── */
+  #filterWrap { display: none; border-bottom: 1px solid var(--border); }
+  .filter-row {
+    display: flex; gap: 8px; align-items: center;
+    flex-wrap: wrap; padding: 9px 20px;
+  }
+  .filter-row + .filter-row { border-top: 1px solid var(--border); }
+  .filter-label {
+    font-family: var(--mono); font-size: 10px;
+    color: var(--muted); letter-spacing: 0.1em;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .sort-select {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); font-family: var(--mono); font-size: 11px;
+    padding: 6px 10px; border-radius: 5px; cursor: pointer; outline: none;
+  }
+
+  /* ── Loading ── */
+  #loadingState {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 50vh; gap: 16px;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 2px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loadingState p { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+  /* ── Empty state ── */
+  #emptyState {
+    display: none; flex-direction: column; align-items: center;
+    justify-content: center; min-height: 50vh; gap: 12px; text-align: center; padding: 40px;
+  }
+  #emptyState h2 { font-size: 20px; font-weight: 300; color: var(--muted); }
+  #emptyState p  { font-size: 13px; color: var(--muted); max-width: 340px; line-height: 1.6; }
+
+  /* ── Grid ── */
+  #grid {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2px; padding: 2px;
+  }
+
+  .card {
+    background: var(--card); position: relative;
+    overflow: hidden; cursor: pointer;
+    aspect-ratio: 9/16;
+    transition: transform 0.15s, z-index 0s;
+  }
+  .card:hover { transform: scale(1.03); z-index: 2; }
+
+  .card-thumb {
+    width: 100%; height: 100%;
+    background: #111;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .card-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover; opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .card-thumb img.loaded { opacity: 1; }
+  .card-thumb .placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; opacity: 0.15;
+  }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .card-info {
+    position: absolute; bottom: 0; left: 0; right: 0; padding: 10px;
+  }
+  .card-name {
+    font-size: 11px; font-weight: 500; color: #fff;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .card-meta { font-family: var(--mono); font-size: 9px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+  .card-cat {
+    position: absolute; top: 7px; right: 7px;
+    background: var(--accent); color: #000;
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px; font-weight: 500;
+    letter-spacing: 0.06em; cursor: pointer;
+  }
+  .card-txt {
+    position: absolute; top: 7px; left: 7px;
+    background: rgba(0,0,0,0.7); color: #4ade80;
+    font-family: var(--mono); font-size: 9px;
+    padding: 2px 6px; border-radius: 3px;
+    border: 1px solid #4ade8066;
+  }
+
+  /* ── Modal ── */
+  #modal {
+    display: none; position: fixed; inset: 0; z-index: 200;
+    background: rgba(0,0,0,0.94); backdrop-filter: blur(10px);
+    align-items: center; justify-content: center; padding: 16px;
+  }
+  #modal.open { display: flex; }
+  .modal-inner {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; width: 100%; max-width: 860px;
+    max-height: 92vh; display: flex; flex-direction: column; overflow: hidden;
+  }
+  .modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 16px; border-bottom: 1px solid var(--border); gap: 10px;
+  }
+  .modal-title { font-size: 13px; font-weight: 500; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .modal-close { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 0 4px; }
+  .modal-close:hover { color: var(--text); }
+
+  .modal-body { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+  .modal-video-wrap {
+    flex: 0 0 auto; width: 300px; background: #000;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-video-wrap video { max-height: 78vh; max-width: 100%; object-fit: contain; }
+  .modal-sidebar { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+
+  .meta-block { display: flex; flex-direction: column; gap: 4px; }
+  .meta-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .meta-value { font-size: 13px; color: var(--text); line-height: 1.5; word-break: break-all; }
+
+  .transcript-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; padding: 12px; font-size: 12px;
+    line-height: 1.75; color: var(--text); max-height: 260px;
+    overflow-y: auto; white-space: pre-wrap;
+  }
+  .transcript-empty { color: var(--muted); font-family: var(--mono); font-size: 11px; }
+
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag-pill {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 20px; padding: 3px 10px; font-size: 11px;
+    font-family: var(--mono); color: var(--muted); cursor: pointer; transition: all 0.1s;
+  }
+  .tag-pill:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── Pagination ── */
+  #pagination { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 20px; flex-wrap: wrap; }
+  .page-btn {
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--muted); font-family: var(--mono); font-size: 11px;
+    padding: 6px 11px; border-radius: 5px; cursor: pointer; transition: all 0.1s;
+  }
+  .page-btn:hover, .page-btn.active { border-color: var(--accent); color: var(--accent); }
+  .page-btn:disabled { opacity: 0.3; cursor: default; pointer-events: none; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    #grid { grid-template-columns: repeat(2, 1fr); }
+    .modal-body { flex-direction: column; }
+    .modal-video-wrap { width: 100%; height: 50vw; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">VIDEO<span>/</span>ARKIV</div>
+  <input type="text" id="searchInput" placeholder="Sök…" oninput="onSearch()" autocomplete="off">
+  <button class="btn btn-primary" onclick="loadFromSupabase()">↺ Ladda om</button>
+</header>
+
+<div id="statsBar">
+  <div class="stat">Videor: <strong id="statTotal">0</strong></div>
+  <div class="stat">Visas: <strong id="statShown">0</strong></div>
+  <div class="stat">Med transkription: <strong id="statTxt">0</strong></div>
+</div>
+
+<div id="filterWrap">
+  <div class="filter-row">
+    <span class="filter-label">Sortera:</span>
+    <select class="sort-select" onchange="onSort(this.value)">
+      <option value="name">Namn A–Ö</option>
+      <option value="name-desc">Namn Ö–A</option>
+      <option value="size-desc">Storlek ↓</option>
+      <option value="size-asc">Storlek ↑</option>
+    </select>
+    <span class="filter-label" style="margin-left:10px">Transkription:</span>
+    <button class="btn btn-ghost active" onclick="setTxtFilter('all',this)">Alla</button>
+    <button class="btn btn-ghost" onclick="setTxtFilter('yes',this)">Med</button>
+    <button class="btn btn-ghost" onclick="setTxtFilter('no',this)">Utan</button>
+  </div>
+  <div class="filter-row" id="catRow">
+    <span class="filter-label">Kategori:</span>
+    <button class="btn btn-ghost active" id="catAll" onclick="setCat('all',this)">Alla</button>
+  </div>
+</div>
+
+<div id="loadingState">
+  <div class="spinner"></div>
+  <p>Hämtar videobiblioteket…</p>
+</div>
+
+<div id="emptyState">
+  <h2>Inga videor hittades</h2>
+  <p>Kontrollera att du har laddat upp videor till Supabase Storage-bucketen <strong>videos</strong>.</p>
+  <button class="btn btn-primary" onclick="loadFromSupabase()" style="margin-top:8px">Försök igen</button>
+</div>
+
+<div id="grid"></div>
+<div id="pagination"></div>
+
+<!-- Modal -->
+<div id="modal">
+  <div class="modal-inner">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">—</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-video-wrap">
+        <video id="modalVideo" controls playsinline preload="metadata"></video>
+      </div>
+      <div class="modal-sidebar">
+        <div class="meta-block">
+          <div class="meta-label">Filnamn</div>
+          <div class="meta-value" id="mFile">—</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Kategori</div>
+          <div class="meta-value" id="mCat">—</div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Storlek</div>
+          <div class="meta-value" id="mSize">—</div>
+        </div>
+        <div class="meta-block" id="mTagBlock" style="display:none">
+          <div class="meta-label">Taggar</div>
+          <div class="tag-row" id="mTags"></div>
+        </div>
+        <div class="meta-block">
+          <div class="meta-label">Transkription</div>
+          <div id="mTranscript" class="transcript-box transcript-empty">Ingen transkription ännu.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ─────────────────────────────────────────
+const SUPABASE_URL    = 'https://srjdasptdkqshnkgstbp.supabase.co';
+const SUPABASE_KEY    = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyamRhc3B0ZGtxc2hua2dzdGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5NjUzNjQsImV4cCI6MjA5NzU0MTM2NH0.K8Q67sPQVa3HCGBABwzIPTxi6RmbfBpil5XlE5-JQvg';
+const BUCKET          = 'Videos';
+const ROOT_PREFIX     = 'insta';
+const PAGE_SIZE       = 48;
+
+// ── State ──────────────────────────────────────────
+let allVideos   = [];
+let filtered    = [];
+let currentPage = 1;
+let sortMode    = 'name';
+let txtFilter   = 'all';
+let catFilter   = 'all';
+let searchQuery = '';
+
+// ── Supabase helpers ───────────────────────────────
+const headers = {
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY
+};
+
+async function listBucket(prefix = '') {
+  const url = `${SUPABASE_URL}/storage/v1/object/list/${BUCKET}`;
+  const body = JSON.stringify({ prefix, limit: 10000, offset: 0, sortBy: { column: 'name', order: 'asc' } });
+  const res = await fetch(url, { method: 'POST', headers: { ...headers, 'Content-Type': 'application/json' }, body });
+  if (!res.ok) throw new Error('Storage list failed: ' + res.status);
+  return res.json();
+}
+
+function publicUrl(path) {
+  return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${encodeURIPath(path)}`;
+}
+
+function encodeURIPath(path) {
+  return path.split('/').map(encodeURIComponent).join('/');
+}
+
+// ── Load ───────────────────────────────────────────
+async function loadFromSupabase() {
+  show('loadingState');
+  hide('grid'); hide('statsBar'); hide('filterWrap'); hide('emptyState');
+  document.getElementById('pagination').innerHTML = '';
+
+  try {
+    // 1. List insta/ contents
+    const topLevel = await listBucket(ROOT_PREFIX + '/');
+    const videos = [];
+    const transcriptMap = {};
+
+    // Show debug info
+    console.log('Top level under insta/:', JSON.stringify(topLevel, null, 2));
+
+    const folders = topLevel.filter(e => e.id === null).map(e => e.name);
+    const rootFiles = topLevel.filter(e => e.id !== null);
+
+    console.log('Folders found:', folders);
+    console.log('Root files found:', rootFiles.length);
+
+    // Process files directly in insta/
+    for (const f of rootFiles) {
+      await processEntry(f, ROOT_PREFIX, videos, transcriptMap);
+    }
+
+    // Process each subfolder
+    for (const folder of folders) {
+      const folderPath = ROOT_PREFIX + '/' + folder;
+      console.log('Scanning folder:', folderPath);
+      const items = await listBucket(folderPath + '/');
+      console.log('Items in', folderPath, ':', items.length);
+      for (const item of items) {
+        if (item.id !== null) {
+          await processEntry(item, folder, videos, transcriptMap);
+        }
+      }
+    }
+
+    // Match transcripts to videos
+    for (const v of videos) {
+      const key = v.baseName.toLowerCase();
+      if (transcriptMap[key]) {
+        v.transcript = transcriptMap[key].text || null;
+        v.tags = transcriptMap[key].tags || [];
+      }
+    }
+
+    allVideos = videos;
+
+    if (allVideos.length === 0) {
+      show('emptyState'); return;
+    }
+
+    buildCatButtons();
+    applyAll();
+    renderUI();
+
+  } catch(err) {
+    console.error(err);
+    document.getElementById('loadingState').innerHTML =
+      `<p style="color:#f87171;font-family:var(--mono);font-size:12px">Fel: ${err.message}</p>
+       <button class="btn btn-ghost" onclick="loadFromSupabase()" style="margin-top:12px">Försök igen</button>`;
+    show('loadingState');
+  }
+}
+
+const VIDEO_EXT = new Set(['mp4','mov','m4v','webm','avi','mkv']);
+const TXT_EXT   = new Set(['json','txt','srt']);
+
+async function processEntry(item, folder, videos, transcriptMap) {
+  const name = item.name.split('/').pop();
+  const ext  = name.split('.').pop().toLowerCase();
+  const path = folder ? `${folder}/${name}` : name;
+  const base = name.replace(/\.[^.]+$/, '').toLowerCase();
+
+  if (VIDEO_EXT.has(ext)) {
+    const catName = folder || '(rot)';
+    videos.push({
+      name,
+      baseName: base,
+      folder: catName,
+      path,
+      size: item.metadata?.size || 0,
+      url: publicUrl(path),
+      transcript: null,
+      tags: []
+    });
+  } else if (TXT_EXT.has(ext)) {
+    try {
+      const res = await fetch(publicUrl(path));
+      const text = await res.text();
+      if (ext === 'json') {
+        const data = JSON.parse(text);
+        transcriptMap[base] = { text: data.text || data.transcript || text, tags: data.tags || [] };
+      } else {
+        transcriptMap[base] = { text, tags: [] };
+      }
+    } catch {}
+  }
+}
+
+// ── Filter / sort ──────────────────────────────────
+function applyAll() {
+  let r = [...allVideos];
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    r = r.filter(v =>
+      v.name.toLowerCase().includes(q) ||
+      v.folder.toLowerCase().includes(q) ||
+      (v.transcript && v.transcript.toLowerCase().includes(q))
+    );
+  }
+
+  if (txtFilter === 'yes') r = r.filter(v => v.transcript);
+  if (txtFilter === 'no')  r = r.filter(v => !v.transcript);
+  if (catFilter !== 'all') r = r.filter(v => v.folder === catFilter);
+
+  r.sort((a,b) => {
+    if (sortMode === 'name')      return a.name.localeCompare(b.name, 'sv');
+    if (sortMode === 'name-desc') return b.name.localeCompare(a.name, 'sv');
+    if (sortMode === 'size-desc') return b.size - a.size;
+    if (sortMode === 'size-asc')  return a.size - b.size;
+    return 0;
+  });
+
+  filtered = r;
+  currentPage = 1;
+}
+
+function onSearch() {
+  searchQuery = document.getElementById('searchInput').value.trim();
+  applyAll(); renderGrid();
+}
+function onSort(v) { sortMode = v; applyAll(); renderGrid(); }
+function setTxtFilter(v, el) {
+  txtFilter = v;
+  document.querySelectorAll('#filterWrap .filter-row:first-child .btn-ghost').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  applyAll(); renderGrid();
+}
+function setCat(v, el) {
+  catFilter = v;
+  document.querySelectorAll('#catRow .btn-ghost').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  applyAll(); renderGrid();
+}
+
+function buildCatButtons() {
+  const row = document.getElementById('catRow');
+  row.querySelectorAll('.dyn-cat').forEach(b => b.remove());
+  const cats = [...new Set(allVideos.map(v => v.folder))].sort((a,b) => a.localeCompare(b,'sv'));
+  cats.forEach(cat => {
+    const count = allVideos.filter(v => v.folder === cat).length;
+    const btn = document.createElement('button');
+    btn.className = 'btn btn-ghost dyn-cat';
+    btn.textContent = `${cat} (${count})`;
+    btn.onclick = () => setCat(cat, btn);
+    row.appendChild(btn);
+  });
+  document.getElementById('catAll').classList.add('active');
+  catFilter = 'all';
+}
+
+// ── Render ─────────────────────────────────────────
+function renderUI() {
+  hide('loadingState'); hide('emptyState');
+  show('statsBar'); show('filterWrap');
+
+  const grid = document.getElementById('grid');
+  grid.style.display = 'grid';
+
+  const withTxt = allVideos.filter(v => v.transcript).length;
+  document.getElementById('statTotal').textContent = allVideos.length;
+  document.getElementById('statTxt').textContent = withTxt;
+
+  renderGrid();
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+
+  document.getElementById('statShown').textContent = filtered.length;
+
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const items = filtered.slice(start, start + PAGE_SIZE);
+
+  if (items.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;padding:60px;text-align:center;color:var(--muted);font-family:var(--mono);font-size:12px">Inga videor matchar sökningen.</div>';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+
+  items.forEach(v => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = () => openModal(v);
+
+    const thumb = document.createElement('div');
+    thumb.className = 'card-thumb';
+    thumb.innerHTML = '<div class="placeholder">▶</div>';
+
+    // Lazy thumbnail via IntersectionObserver
+    const img = document.createElement('img');
+    img.alt = '';
+    img.onload = () => img.classList.add('loaded');
+    img.onerror = () => {};
+    lazyLoad(img, v.url + '#t=2');
+    thumb.appendChild(img);
+
+    card.appendChild(thumb);
+
+    const overlay = document.createElement('div');
+    overlay.className = 'card-overlay';
+    card.appendChild(overlay);
+
+    if (v.folder && v.folder !== '(rot)') {
+      const tag = document.createElement('div');
+      tag.className = 'card-cat';
+      tag.textContent = v.folder;
+      tag.onclick = e => {
+        e.stopPropagation();
+        const btn = [...document.querySelectorAll('#catRow .dyn-cat')].find(b => b.textContent.startsWith(v.folder));
+        if (btn) setCat(v.folder, btn);
+      };
+      card.appendChild(tag);
+    }
+
+    if (v.transcript) {
+      const badge = document.createElement('div');
+      badge.className = 'card-txt';
+      badge.textContent = 'TXT';
+      card.appendChild(badge);
+    }
+
+    const info = document.createElement('div');
+    info.className = 'card-info';
+    info.innerHTML = `<div class="card-name">${esc(v.name)}</div><div class="card-meta">${formatBytes(v.size)}</div>`;
+    card.appendChild(info);
+
+    grid.appendChild(card);
+  });
+
+  renderPagination();
+}
+
+// Lazy loading via IntersectionObserver
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const img = e.target;
+      if (img.dataset.src) { img.src = img.dataset.src; observer.unobserve(img); }
+    }
+  });
+}, { rootMargin: '200px' });
+
+function lazyLoad(img, src) {
+  img.dataset.src = src;
+  observer.observe(img);
+}
+
+function renderPagination() {
+  const total = Math.ceil(filtered.length / PAGE_SIZE);
+  const pg = document.getElementById('pagination');
+  pg.innerHTML = '';
+  if (total <= 1) return;
+
+  const mk = (label, page, disabled, active) => {
+    const b = document.createElement('button');
+    b.className = 'page-btn' + (active ? ' active' : '');
+    b.textContent = label; b.disabled = disabled;
+    b.onclick = () => { currentPage = page; renderGrid(); window.scrollTo(0,0); };
+    return b;
+  };
+
+  pg.appendChild(mk('‹', currentPage-1, currentPage===1, false));
+  const pages = buildPageList(currentPage, total);
+  pages.forEach(p => {
+    if (p === '…') {
+      const s = document.createElement('span');
+      s.textContent = '…';
+      s.style.cssText = 'color:var(--muted);padding:0 4px;font-size:12px';
+      pg.appendChild(s);
+    } else {
+      pg.appendChild(mk(p, p, false, p === currentPage));
+    }
+  });
+  pg.appendChild(mk('›', currentPage+1, currentPage===total, false));
+}
+
+function buildPageList(cur, total) {
+  if (total <= 7) return Array.from({length:total},(_,i)=>i+1);
+  const p = [1,2];
+  if (cur > 4) p.push('…');
+  for (let i=Math.max(3,cur-1); i<=Math.min(total-2,cur+1); i++) p.push(i);
+  if (cur < total-3) p.push('…');
+  p.push(total-1,total);
+  return [...new Set(p)];
+}
+
+// ── Modal ──────────────────────────────────────────
+function openModal(v) {
+  document.getElementById('modalTitle').textContent = v.name;
+  document.getElementById('mFile').textContent = v.name;
+  document.getElementById('mCat').textContent = v.folder;
+  document.getElementById('mSize').textContent = formatBytes(v.size);
+
+  const vid = document.getElementById('modalVideo');
+  vid.src = v.url;
+  vid.load();
+
+  const tx = document.getElementById('mTranscript');
+  if (v.transcript) {
+    tx.textContent = v.transcript;
+    tx.classList.remove('transcript-empty');
+  } else {
+    tx.textContent = 'Ingen transkription ännu.';
+    tx.classList.add('transcript-empty');
+  }
+
+  const tagsEl = document.getElementById('mTags');
+  tagsEl.innerHTML = '';
+  if (v.tags && v.tags.length) {
+    document.getElementById('mTagBlock').style.display = 'block';
+    v.tags.forEach(t => {
+      const pill = document.createElement('span');
+      pill.className = 'tag-pill';
+      pill.textContent = t;
+      pill.onclick = () => {
+        document.getElementById('searchInput').value = t;
+        searchQuery = t; applyAll(); closeModal(); renderGrid();
+      };
+      tagsEl.appendChild(pill);
+    });
+  } else {
+    document.getElementById('mTagBlock').style.display = 'none';
+  }
+
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.getElementById('modalVideo').pause();
+  document.getElementById('modalVideo').src = '';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ── Utils ──────────────────────────────────────────
+function show(id) { document.getElementById(id).style.display = 'flex'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function formatBytes(b) {
+  if (!b) return '—';
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b/1024).toFixed(1) + ' KB';
+  if (b < 1073741824) return (b/1048576).toFixed(1) + ' MB';
+  return (b/1073741824).toFixed(2) + ' GB';
+}
+
+// ── Init ───────────────────────────────────────────
+loadFromSupabase();
+</script>
+</body>
+</html>

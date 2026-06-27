@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Välmående Recept</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --cream: #F7F3EE;
+    --bark: #3D2B1F;
+    --sage: #7A9E7E;
+    --terracotta: #C4714A;
+    --gold: #D4A853;
+    --mist: #EAE5DE;
+    --text: #2A1F17;
+    --note-bg: #FFF8EE;
+    --note-border: #E8C87A;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 60px;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    padding: 2rem 1rem 4rem;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(247,243,238,0.95);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--mist);
+    padding: 0.7rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  nav a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.85rem;
+    background: white;
+    border: 1px solid var(--mist);
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--bark);
+    text-decoration: none;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+
+  nav a:hover {
+    background: var(--gold);
+    border-color: var(--gold);
+    color: white;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 1rem 2.5rem;
+    border-bottom: 1px solid var(--mist);
+    margin-bottom: 3rem;
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    color: var(--bark);
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+
+  header p {
+    color: var(--sage);
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .recipes {
+    max-width: 780px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .recipe-card {
+    background: white;
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(61,43,31,0.07);
+  }
+
+  .recipe-header {
+    padding: 2rem 2rem 1.5rem;
+    border-bottom: 3px solid var(--mist);
+    display: flex;
+    align-items: flex-start;
+    gap: 1.2rem;
+  }
+
+  .recipe-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+  }
+
+  .recipe-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--bark);
+    margin-bottom: 0.3rem;
+    line-height: 1.2;
+  }
+
+  .recipe-header .tagline {
+    font-size: 0.82rem;
+    color: var(--terracotta);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .recipe-body {
+    padding: 2rem;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--sage);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--mist);
+  }
+
+  .ingredients {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .ingredients li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--mist);
+    font-size: 0.95rem;
+  }
+
+  .ingredients li:last-child { border-bottom: none; }
+
+  .ing-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.45rem;
+  }
+
+  .ing-amount {
+    font-weight: 500;
+    color: var(--terracotta);
+    min-width: 90px;
+    font-size: 0.88rem;
+  }
+
+  .steps-list {
+    list-style: none;
+    margin-bottom: 2rem;
+  }
+
+  .steps-list li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    font-size: 0.93rem;
+    border-bottom: 1px solid var(--mist);
+  }
+
+  .steps-list li:last-child { border-bottom: none; }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    font-weight: 600;
+    flex-shrink: 0;
+    width: 1.4rem;
+    text-align: right;
+    margin-top: 0.05rem;
+  }
+
+  .fact-note {
+    background: var(--note-bg);
+    border-left: 3px solid var(--note-border);
+    border-radius: 0 2px 2px 0;
+    padding: 1rem 1.2rem;
+    font-size: 0.84rem;
+    color: #5A4A35;
+    line-height: 1.6;
+  }
+
+  .fact-note strong {
+    color: var(--bark);
+    font-weight: 500;
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  footer {
+    text-align: center;
+    margin-top: 4rem;
+    font-size: 0.8rem;
+    color: #9A8070;
+    max-width: 780px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  @media (max-width: 500px) {
+    .recipe-header { flex-direction: column; gap: 0.5rem; }
+    .ing-amount { min-width: 70px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#fotbad">🦶 Fotbad</a>
+  <a href="#vitlok">🧄 Vitlök & citron</a>
+  <a href="#morgon">🫚 Morgondryck</a>
+  <a href="#mjolk">🥛 Kryddmjölk</a>
+  <a href="#guldgrot">🌾 Guldgröt</a>
+  <a href="#traning">⚡ Sprint</a>
+  <a href="#kost">🥩 Kost</a>
+</nav>
+
+<header>
+  <h1>Välmående Recept</h1>
+  <p>Recept &amp; träning &nbsp;·&nbsp; Sammanfattat wellnessinnehåll</p>
+</header>
+
+<div class="recipes">
+
+  <!-- RECEPT 1: FOTBAD -->
+  <div class="recipe-card" id="fotbad">
+    <div class="recipe-header">
+      <div class="recipe-icon">🦶</div>
+      <div>
+        <div class="tagline">Recept 1 &nbsp;·&nbsp; Avslappning</div>
+        <h2>Epsomsalts­fotbad</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Ingredienser</div>
+      <ul class="ingredients">
+        <li><span class="ing-dot"></span><span class="ing-amount">3–5 liter</span> Vatten, så varmt du tål</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 dl</span> Epsomsalt (magnesiumsulfat)</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">½ dl</span> Äppelcidervinäger</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">valfritt</span> Rosmarin, lavendel eller ingefära</li>
+      </ul>
+
+      <div class="section-label">Gör så här</div>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span> Fyll ett fotbadskärl med ca 3–5 liter varmt vatten.</li>
+        <li><span class="step-num">2</span> Tillsätt epsomsalt och rör tills det löser sig.</li>
+        <li><span class="step-num">3</span> Häll i äppelcidervinägern.</li>
+        <li><span class="step-num">4</span> Lägg eventuellt i örter eller skivor av ingefära.</li>
+        <li><span class="step-num">5</span> Blötlägg fötterna i 20–30 minuter.</li>
+        <li><span class="step-num">6</span> Torrborsta fötterna uppåt mot hjärtat efteråt.</li>
+      </ol>
+
+      <div class="fact-note">
+        <strong>💡 Vad är faktiskt bevisat</strong>
+        Varmt vatten + epsomsalt avslappnar muskler och kan lindra ömma fötter. Avslappningen i sig förbättrar sömn. Påståenden om att "avgifta hela kroppen via fötterna" saknar vetenskapligt stöd – det är lever och njurar som sköter det arbetet.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECEPT 2: VITLÖKSDRYCK -->
+  <div class="recipe-card" id="vitlok">
+    <div class="recipe-header">
+      <div class="recipe-icon">🧄</div>
+      <div>
+        <div class="tagline">Recept 2 &nbsp;·&nbsp; Hälsodryck</div>
+        <h2>Vitlök, citron &amp; gurkmeja</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Ingredienser</div>
+      <ul class="ingredients">
+        <li><span class="ing-dot"></span><span class="ing-amount">3 klyftor</span> Vitlök, skivad</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 st</span> Citroner, skivade</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Gurkmejapulver</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 nypa</span> Svartpeppar</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">5 dl</span> Vatten</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Honung (valfritt, för smak)</li>
+      </ul>
+
+      <div class="section-label">Gör så här</div>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span> Lägg vatten och alla ingredienser i en kastrull.</li>
+        <li><span class="step-num">2</span> Koka på hög värme i 10 minuter.</li>
+        <li><span class="step-num">3</span> Sila av och häll upp i ett glas.</li>
+        <li><span class="step-num">4</span> Tillsätt ev. honung när drycken svalnat något.</li>
+        <li><span class="step-num">5</span> Drick en kopp dagligen i 2 veckor, gärna på fastande mage.</li>
+      </ol>
+
+      <div class="fact-note">
+        <strong>💡 Vad är faktiskt bevisat</strong>
+        Vitlök har antimikrobiella egenskaper. Gurkmeja (curcumin) har antiinflammatorisk effekt, förstärkt av piperin i svartpeppar. Citron ger C-vitamin. Sammantaget en bra hälsodryck – men påståendet att den "rensar njurar fullständigt" och att du "aldrig behöver besöka sjukhus igen" är kraftigt överdrivet och potentiellt farligt om man skjuter upp läkarvård.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECEPT 3: FETTFÖRBRÄNNINGS­DRYCK -->
+  <div class="recipe-card" id="morgon">
+    <div class="recipe-header">
+      <div class="recipe-icon">🫚</div>
+      <div>
+        <div class="tagline">Recept 3 &nbsp;·&nbsp; Morgondryck</div>
+        <h2>Gurkmeja, ingefära &amp; ACV</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Ingredienser</div>
+      <ul class="ingredients">
+        <li><span class="ing-dot"></span><span class="ing-amount">1 liten bit</span> Färsk gurkmeja (eller ½ tsk pulver)</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 liten bit</span> Färsk ingefära, riven eller skivad</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 nypa</span> Svartpeppar</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 nypa</span> Kanel</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 dl</span> Vatten</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Äppelcidervinäger (ACV)</li>
+      </ul>
+
+      <div class="section-label">Gör så här</div>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span> Lägg gurkmeja, ingefära, peppar och kanel i vattnet.</li>
+        <li><span class="step-num">2</span> Koka i 2 minuter.</li>
+        <li><span class="step-num">3</span> Sila av i ett glas.</li>
+        <li><span class="step-num">4</span> Rör i äppelcidervinägern när drycken svalnat något.</li>
+        <li><span class="step-num">5</span> Drick på fastande mage varje morgon.</li>
+      </ol>
+
+      <div class="fact-note">
+        <strong>💡 Vad är faktiskt bevisat</strong>
+        Ingefära stödjer matsmältning och kan minska illamående. Kanel har viss effekt på blodsockerstabilisering. Gurkmeja + peppar är antiinflammatoriskt. ACV kan ha en mild effekt på mättnadskänsla. Som morgonrutin är detta rimligt – men "ökar fettförbränningen med 2000%" är marknadsföringssiffror utan vetenskaplig grund.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- RECEPT 4: KRYDDMJÖLK -->
+  <div class="recipe-card" id="mjolk">
+    <div class="recipe-header">
+      <div class="recipe-icon">🥛</div>
+      <div>
+        <div class="tagline">Recept 4 &nbsp;·&nbsp; Kvällsdryck</div>
+        <h2>Kryddmjölk med kardemumma &amp; kryddnejlika</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Ingredienser</div>
+      <ul class="ingredients">
+        <li><span class="ing-dot"></span><span class="ing-amount">2 dl</span> Mjölk (valfri sort)</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 st</span> Kardemummakapslar (eller ¼ tsk mald)</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 st</span> Kryddnejlikor (hela eller ¼ tsk mald)</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Honung eller kanel (valfritt för smak)</li>
+      </ul>
+
+      <div class="section-label">Gör så här</div>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span> Värm mjölken i en kastrull på medelvärme – koka inte upp.</li>
+        <li><span class="step-num">2</span> Tillsätt kardemumma och kryddnejlikor.</li>
+        <li><span class="step-num">3</span> Låt dra på låg värme i 5–10 minuter.</li>
+        <li><span class="step-num">4</span> Sila av och häll upp i en mugg.</li>
+        <li><span class="step-num">5</span> Drick 2–3 gånger i veckan, gärna på kvällen.</li>
+      </ol>
+
+      <div class="fact-note">
+        <strong>💡 Vad är faktiskt bevisat</strong>
+        Kardemumma och kryddnejlika har dokumenterade antimikrobiella och antiinflammatoriska egenskaper. Varm mjölk på kvällen kan stödja sömn via tryptofan. Det är en trevlig, välsmakande dryck med reell hälsopotential. Däremot saknas bevis för att den "förhindrar parasiter i kroppen", "avgiftar lungorna" eller ger "strålande hud" – det är typiska övertolkningar i sociala medier-innehåll.
+      </div>
+    </div>
+  </div>
+
+  <!-- RECEPT 5: GULDGRÖT -->
+  <div class="recipe-card" id="guldgrot">
+    <div class="recipe-header">
+      <div class="recipe-icon">🌾</div>
+      <div>
+        <div class="tagline">Recept 5 &nbsp;·&nbsp; Food Pharmacy &nbsp;·&nbsp; 2 portioner</div>
+        <h2>Guldgröt</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Ingredienser</div>
+      <ul class="ingredients">
+        <li><span class="ing-dot"></span><span class="ing-amount">2 dl</span> Havregryn</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 msk</span> Chiafrön</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 st</span> Färska dadlar, urkärnade</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Malen kanel</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 tsk</span> Malen gurkmeja</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 krm</span> Malen kardemumma</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">2 krm</span> Malen ingefära</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">½ dl</span> Riven kokos</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">1 krm</span> Salt</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">4 dl</span> Valfri växtbaserad mjölk</li>
+      </ul>
+
+      <div class="section-label">Gör så här</div>
+      <ol class="steps-list">
+        <li><span class="step-num">1</span> Skär dadlarna i mindre bitar.</li>
+        <li><span class="step-num">2</span> Blanda alla ingredienser väl och fördela i två små skålar.</li>
+        <li><span class="step-num">3</span> Låt stå i kylskåp över natten.</li>
+        <li><span class="step-num">4</span> Ta ut från kylskåpet, rör runt och tillsätt eventuellt lite mer växtmjölk för en lösare konsistens.</li>
+        <li><span class="step-num">5</span> Strö gärna över valfri topping — blåbär, granola, äpple eller nötter.</li>
+      </ol>
+
+      <div class="fact-note">
+        <strong>💡 Quick tip</strong>
+        Gör en större sats av kryddblandningen i förväg så slipper du mäta varje gång. Passar även i smoothies. Gurkmeja + ingefära + kanel är antiinflammatoriska kryddor med gott vetenskapligt stöd — det här är ett genuint nyttigt recept.
+      </div>
+    </div>
+  </div>
+
+</div>
+<div style="max-width:780px;margin:3rem auto 0;">
+
+  <div style="text-align:center;padding:2rem 0 1.5rem;border-top:2px solid var(--mist);margin-bottom:2rem;">
+    <div style="font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--sage);margin-bottom:0.5rem;">Dr. Sean O'Mara</div>
+    <div style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--bark);">Visceralt fett — träning &amp; kost</div>
+  </div>
+
+  <!-- TRÄNING -->
+  <div class="recipe-card" id="traning" style="margin-bottom:2rem;">
+    <div class="recipe-header">
+      <div class="recipe-icon">⚡</div>
+      <div>
+        <div class="tagline">Träning &nbsp;·&nbsp; Sprintprotokoll</div>
+        <h2>Kortvarig maximal intensitet</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Huvudbudskap</div>
+      <p style="font-size:0.93rem;margin-bottom:1.5rem;line-height:1.8;">Lång uthållighetsträning i steady-state (jogging, cykling) är ineffektivt mot visceralt fett — och kan till och med motverka det. Kortvarig, maximal intensitetsträning som sprinting har däremot visats kunna minska visceralt fett markant.</p>
+
+      <div class="section-label">Sprintprotokoll</div>
+      <ul class="ingredients" style="margin-bottom:1.5rem;">
+        <li><span class="ing-dot"></span><span class="ing-amount">6–10 st</span> Spurter à 20–30 sekunder, maximal intensitet</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Full vila</span> Fullständig återhämtning mellan varje spurt</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Bonus</span> Utför på fastande mage för ökad effekt</li>
+      </ul>
+
+      <div class="section-label">Varför fasta + sprint?</div>
+      <p style="font-size:0.93rem;margin-bottom:1.5rem;line-height:1.8;">I fastat tillstånd är adrenalinnivåerna förhöjda, vilket gör att kroppen lättare mobiliserar energi direkt från det viscerala fettet under intensiv träning.</p>
+
+      <div class="fact-note">
+        <strong>💡 Vad säger forskningen</strong>
+        HIIT (högintensiv intervallträning) har starkt stöd för att minska bukfett jämfört med steady-state cardio — detta stämmer väl med vetenskaplig litteratur. Att kombinera fasta med intensiv träning är ett aktivt forskningsområde med lovande resultat. Enskilda fallstudier (som "en deltagare") räknas dock inte som bevis — det behövs kontrollerade studier för starka slutsatser.
+      </div>
+    </div>
+  </div>
+
+  <!-- KOST -->
+  <div class="recipe-card" id="kost">
+    <div class="recipe-header">
+      <div class="recipe-icon">🥩</div>
+      <div>
+        <div class="tagline">Kost &nbsp;·&nbsp; O'Mara-protokollet</div>
+        <h2>Köttbaserad kost &amp; tarmhälsa</h2>
+      </div>
+    </div>
+    <div class="recipe-body">
+      <div class="section-label">Prioriteringsordning</div>
+      <ul class="ingredients" style="margin-bottom:1.5rem;">
+        <li><span class="ing-dot"></span><span class="ing-amount">Bas</span> Kött från gräsbetesdjur, ägg, fisk</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Dagligen</span> Fermenterade livsmedel — kimchi, surkål, kefir</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Eliminera</span> Processad mat — absolut högsta prioritet</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Minimera</span> Kolhydrater, särskilt socker och stärkelse</li>
+        <li><span class="ing-dot"></span><span class="ing-amount">Kombinera</span> Fasta + sömnoptimering för accelererad effekt</li>
+      </ul>
+
+      <div class="section-label">Logiken bakom kosten</div>
+      <p style="font-size:0.93rem;margin-bottom:1.5rem;line-height:1.8;">Vissa tarmbakterier trivs på kolhydrater och driver fettinlagring. Genom att minimera kolhydrater och tillföra fermenterade livsmedel förskjuts tarmfloran mot bakterier som inte gynnar visceral fettuppbyggnad.</p>
+
+      <div class="fact-note">
+        <strong>💡 Vad säger forskningen</strong>
+        Elimineringen av processad mat och socker har mycket starkt vetenskapligt stöd för att minska visceralt fett. Fermenterade livsmedel är bevisat gynnsamma för tarmfloran. Huruvida en strikt köttbaserad (carnivore) kost är optimal är däremot omtvistat — de flesta studier pekar på att en varierad kost rik på fibrer är bättre för tarmhälsan långsiktigt. Fasta och sömnoptimering har solida bevis bakom sig.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  Innehållet är sammanfattat från populärt wellnessinnehåll och Dr. Sean O'Maras råd. Ersätt inte läkarvård med kosttips.
+</footer>
+
+</body>
+</html>

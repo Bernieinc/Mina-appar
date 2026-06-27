@@ -376,7 +376,7 @@
     <p class="hero-sub">Klicka på en app för att testa den. Alla appar är byggda med ren HTML, CSS och JavaScript.</p>
   </div>
   <div>
-    <div class="app-count" id="countDisplay">5</div>
+    <div class="app-count" id="countDisplay">6</div>
     <div class="app-count-label">appar</div>
   </div>
 </div>
@@ -386,6 +386,7 @@
   <button class="filter-btn active" onclick="filterApps('alla', this)">Alla</button>
   <button class="filter-btn" onclick="filterApps('verktyg', this)">Verktyg</button>
   <button class="filter-btn" onclick="filterApps('träning', this)">Träning</button>
+  <button class="filter-btn" onclick="filterApps('hälsa', this)">Hälsa</button>
   <button class="filter-btn" onclick="filterApps('övrigt', this)">Övrigt</button>
 </div>
 
@@ -400,7 +401,7 @@
     <div class="card-thumb" style="background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);">💪</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="card-tag new">Ny</span>
+        
         <span class="card-tag">Träning</span>
       </div>
       <div class="card-title">Träning !!!</div>
@@ -417,7 +418,7 @@
     <div class="card-thumb" style="background: linear-gradient(135deg, #e8e0d0 0%, #c8b89a 100%);">🧘</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="card-tag new">Ny</span>
+        
         <span class="card-tag">Träning</span>
         <span class="card-tag">Vila</span>
       </div>
@@ -435,7 +436,7 @@
     <div class="card-thumb" style="background: linear-gradient(135deg, #0a0a0a 0%, #1c1c1c 100%);">🏆</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="card-tag new">Ny</span>
+        
         <span class="card-tag">Träning</span>
       </div>
       <div class="card-title">Min Resa</div>
@@ -452,7 +453,7 @@
     <div class="card-thumb" style="background: linear-gradient(135deg, #0d1f2d 0%, #1a3a4a 100%);">🌊</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="card-tag new">Ny</span>
+        
         <span class="card-tag">Träning</span>
         <span class="card-tag">Vila</span>
       </div>
@@ -470,12 +471,30 @@
     <div class="card-thumb" style="background: linear-gradient(135deg, #0d0d0d 0%, #1c1c1c 100%);">🎬</div>
     <div class="card-body">
       <div class="card-tags">
-        <span class="card-tag new">Ny</span>
+        
         <span class="card-tag">Verktyg</span>
         <span class="card-tag">Video</span>
       </div>
-      <div class="card-title">Videoarkiv</div>
+      <div class="card-title">Grymma Videos</div>
       <div class="card-desc">Bläddra och sök bland sparade Instagram-videos. Kategoriserat, sökbart och tillgängligt på alla enheter via Supabase.</div>
+    </div>
+    <div class="card-footer">
+      <span class="card-date">Jun 2026</span>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <!-- Recept & Kost -->
+  <a class="app-card" href="recept.html" data-category="hälsa" data-name="recept kost hälsa välmående fotbad dryck gröt träning sprint">
+    <div class="card-thumb" style="background: linear-gradient(135deg, #3a2010 0%, #7a4a20 100%);">🥗</div>
+    <div class="card-body">
+      <div class="card-tags">
+        
+        <span class="card-tag">Hälsa</span>
+        <span class="card-tag">Kost</span>
+      </div>
+      <div class="card-title">Recept & Kost</div>
+      <div class="card-desc">Samling av hälsorecept — fotbad, drycker, guldgröt — samt tränings- och kostprotokoll mot visceralt fett.</div>
     </div>
     <div class="card-footer">
       <span class="card-date">Jun 2026</span>
@@ -490,25 +509,6 @@
 
 </div>
 
-<!-- Instruktioner -->
-<div class="howto">
-  <div class="howto-inner">
-    <div>
-      <div class="howto-title">Hur lägger jag till en app?</div>
-      <div class="howto-text">Kopiera ett app-card-block i HTML-koden och ändra:<br>
-      href → filnamnet på din HTML-app<br>
-      data-category → verktyg / träning / övrigt<br>
-      Emoji, titel och beskrivning efter smak.<br><br>
-      Ladda sedan upp alla filer till GitHub och aktivera Pages.</div>
-    </div>
-    <div class="howto-code">1. Skapa GitHub-repo
-2. Ladda upp index.html
-   + dina app-filer
-3. Settings → Pages
-   → Deploy from main
-4. Dela länken! 🚀</div>
-  </div>
-</div>
 
 <script>
   let currentFilter = 'alla';
